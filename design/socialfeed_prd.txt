@@ -1,0 +1,38 @@
+# PRD: SocialFeed — Social Media Mini
+
+## Ringkasan
+Aplikasi social media ala Facebook dibangun dengan Laravel + Blade + Livewire. Target pengguna: individu yang ingin berbagi status, terhubung dengan teman, dan berdiskusi dalam grup.
+
+## Fitur Lengkap
+### V1 — MVP
+- Register, login, logout
+- Edit profil (bio, foto profil, foto cover)
+- Buat status teks
+- Feed global (semua postingan, urut terbaru)
+- Like/unlike postingan
+- Komentar di postingan (dengan nested reply)
+
+### V2
+- Upload gambar di postingan (multiple)
+- Sistem teman (kirim, terima, tolak, unfriend)
+- Notifikasi dalam app (teman baru, like, komentar)
+- Filter feed berdasarkan teman
+
+### V3
+- Grup (buat grup publik/privat, join/leave, posting di grup, daftar anggota)
+- Pencarian user & grup
+- Notifikasi realtime via Pusher
+
+## Halaman & Routing
+- `/` Landing / Login
+- `/feed` Home feed (3-column layout)
+- `/profile/{user}` Profil user
+- `/friends` Daftar teman & permintaan
+- `/groups` Daftar grup
+- `/notifications` Notifikasi
+
+## Layout
+3 kolom:
+- Sidebar Kiri: Navigasi & Menu
+- Konten Utama: Feed / Postings
+- Sidebar Kanan: Saran Teman & Trending
