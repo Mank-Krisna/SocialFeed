@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\Story;
-use App\Models\StoryView;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
