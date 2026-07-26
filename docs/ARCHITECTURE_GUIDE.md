@@ -5,6 +5,34 @@ Target: developer baru yang baru pertama kali melihat codebase ini.
 
 ---
 
+## Daftar Isi
+
+1. [Root Directory Overview](#1-root-directory-overview)
+2. [App Directory Deep Dive](#2-app-directory-deep-dive)
+3. [Config Directory](#3-config-directory)
+4. [Database Directory](#4-database-directory)
+5. [Routes Directory](#5-routes-directory)
+6. [Resources Directory](#6-resources-directory)
+7. [Public Directory](#7-public-directory)
+8. [Tests Directory](#8-tests-directory)
+9. [Docker & Deployment](#9-docker--deployment)
+10. [Alur Kerja End-to-End](#10-alur-kerja-end-to-end)
+11. [Request Lifecycle](#11-request-lifecycle)
+12. [Asset Pipeline](#12-asset-pipeline)
+13. [Database Schema](#13-database-schema-overview)
+14. [Security Layer](#14-security-layer)
+15. [Design System](#15-design-system)
+
+> **Quick Start untuk Developer Baru**
+>
+> 1. Clone repo → `composer install` → `npm install`
+> 2. Copy `.env.example` ke `.env`, generate key: `php artisan key:generate`
+> 3. `php artisan migrate --seed`
+> 4. `npm run dev` (dev) atau `npm run build` (production)
+> 5. Buka `http://localhost:8000`
+
+---
+
 ## 1. Root Directory Overview
 
 ### File Root
@@ -482,7 +510,7 @@ php artisan test --tests=Auth             # Specific folder
 
 ### `Dockerfile` — Multi-stage Build
 
-```
+```dockerfile
 Stage 1: Node → npm install, npm run build (assets)
 Stage 2: PHP-FPM → composer install, runtime
 Stage 3: Nginx → web server
@@ -584,7 +612,7 @@ User klik toggle → Alpine.js x-on:click
 1. Browser → HTTP Request → public/index.php
 2. require __DIR__.'/../vendor/autoload.php'
 3. require __DIR__.'/../bootstrap/app.php'
-4. Laravel Kernel handle request
+4. Laravel application handle request
 5. Middleware pipeline:
    - TrustProxies
    - HandleCors
