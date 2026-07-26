@@ -8,24 +8,23 @@ use App\Models\Message;
 use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class Messenger extends Component
 {
-    public $conversations;
-    public $messages = [];
-    public $activeConversationId = null;
+    public ?int $activeConversationId = null;
     public string $body = '';
     public string $searchQuery = '';
 
-    public function mount(): void
-    {
-        $this->loadConversations();
-    }
-
-    public function loadConversations(): void
+    #[Computed]
+    public function conversations()
     {
         $user = Auth::user();
+        if (!$user) {
+            return collect();
+        }
+
         $all = $user->conversations()
             ->with(['messages' => fn ($q) => $q->latest()->take(1)])
             ->get();
@@ -34,16 +33,28 @@ class Messenger extends Component
             $c->unread = $c->unreadCountFor($user);
         });
 
-        $this->conversations = $all->sortByDesc(function ($c) {
+        return $all->sortByDesc(function ($c) {
             $last = $c->messages->first();
             return $last?->created_at ?? $c->created_at;
         })->values();
     }
 
+    #[Computed]
+    public function messages()
+    {
+        if (!$this->activeConversationId) {
+            return collect();
+        }
+
+        return Message::where('conversation_id', $this->activeConversationId)
+            ->with('user')
+            ->oldest()
+            ->get();
+    }
+
     public function openConversation(int $conversationId): void
     {
         $this->activeConversationId = $conversationId;
-        $this->loadMessages();
         $this->markAsRead();
     }
 
@@ -65,20 +76,7 @@ class Messenger extends Component
         $conv->users()->attach([Auth::id(), $userId]);
 
         $this->activeConversationId = $conv->id;
-        $this->messages = [];
-        $this->loadConversations();
-
         $this->dispatch('notify', message: 'Percakapan baru dimulai', type: 'success');
-    }
-
-    public function loadMessages(): void
-    {
-        if (!$this->activeConversationId) return;
-
-        $this->messages = Message::where('conversation_id', $this->activeConversationId)
-            ->with('user')
-            ->oldest()
-            ->get();
     }
 
     public function markAsRead(): void
@@ -89,7 +87,6 @@ class Messenger extends Component
             'last_read_at' => now(),
         ]);
 
-        $this->loadConversations();
         $this->dispatch('message-read');
     }
 
@@ -128,8 +125,6 @@ class Messenger extends Component
         }
 
         $this->body = '';
-        $this->loadMessages();
-        $this->loadConversations();
         $this->markAsRead();
     }
 

@@ -7,7 +7,7 @@
 
     {{-- Tab nav --}}
     <div class="flex gap-1 mb-6 p-1 bg-[#f3f3f7] dark:bg-[#25282e] rounded-xl">
-        @foreach (['overview' => 'Ringkasan', 'users' => 'Pengguna', 'posts' => 'Postingan'] as $key => $label)
+        @foreach (['overview' => 'Ringkasan', 'users' => 'Pengguna', 'posts' => 'Postingan', 'reports' => 'Laporan'] as $key => $label)
             <button wire:click="switchTab('{{ $key }}')" class="flex-1 py-2 rounded-lg text-sm font-bold transition {{ $tab === $key ? 'bg-white dark:bg-[#1a1c1f] text-[#0058bc] shadow-sm' : 'text-[#414754] dark:text-[#b0b4be] hover:bg-white/50 dark:hover:bg-[#1a1c1f]/50' }}">
                 {{ $label }}
             </button>
@@ -137,6 +137,78 @@
             </div>
             @if ($posts->hasPages())
                 <div class="mt-4">{{ $posts->links(data: ['scrollTo' => false]) }}</div>
+            @endif
+        </div>
+    @endif
+
+    @if ($tab === 'reports')
+        <div class="card-elevation p-4">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-sm text-[var(--text-primary)]">
+                    Laporan Masuk
+                    @if ($stats['reports'] > 0)
+                        <span class="ml-2 px-2 py-0.5 bg-red-500 text-white text-xs rounded-full">{{ $stats['reports'] }}</span>
+                    @endif
+                </h3>
+            </div>
+
+            @if ($reports->isEmpty())
+                <p class="text-sm text-[var(--text-secondary)] text-center py-8">Tidak ada laporan.</p>
+            @else
+                <div class="space-y-3">
+                    @foreach ($reports as $report)
+                        <div class="p-3 rounded-lg border border-[var(--card-border)] {{ $report->status === 'pending' ? 'bg-yellow-50 dark:bg-yellow-500/5' : 'bg-[var(--surface-hover)]' }}">
+                            <div class="flex items-start justify-between gap-3">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="px-2 py-0.5 text-xs font-semibold rounded-full
+                                            {{ match($report->status) {
+                                                'pending' => 'bg-yellow-100 text-yellow-700 dark:bg-yellow-500/20 dark:text-yellow-400',
+                                                'resolved' => 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400',
+                                                'dismissed' => 'bg-gray-100 text-gray-600 dark:bg-gray-500/20 dark:text-gray-400',
+                                                default => 'bg-gray-100 text-gray-600'
+                                            } }}">
+                                            {{ ucfirst($report->status) }}
+                                        </span>
+                                        <span class="text-xs font-semibold text-[var(--accent)]">{{ $report->reason_label }}</span>
+                                    </div>
+                                    <p class="text-xs text-[var(--text-secondary)]">
+                                        Dilaporkan oleh <span class="font-semibold">{{ $report->reporter?->name ?? 'Unknown' }}</span>
+                                        {{ $report->created_at->diffForHumans() }}
+                                    </p>
+                                    @if ($report->reportable)
+                                        <div class="mt-2 p-2 bg-[var(--surface-hover)] rounded text-xs text-[var(--text-secondary)] line-clamp-2">
+                                            @if (class_basename($report->reportable_type) === 'Post')
+                                                {{ Str::limit($report->reportable->body, 100) }}
+                                            @elseif (class_basename($report->reportable_type) === 'Comment')
+                                                {{ Str::limit($report->reportable->body, 100) }}
+                                            @else
+                                                {{ class_basename($report->reportable_type) }} #{{ $report->reportable_id }}
+                                            @endif
+                                        </div>
+                                    @endif
+                                </div>
+                                @if ($report->status === 'pending')
+                                    <div class="flex items-center gap-1 shrink-0">
+                                        @if ($confirmResolveReportId === $report->id)
+                                            <button wire:click="resolveReport({{ $report->id }})" class="text-xs px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition">Hapus & Selesai</button>
+                                            <button wire:click="$set('confirmResolveReportId', null)" class="text-xs px-2 py-1 bg-gray-200 dark:bg-[var(--surface-hover)] rounded transition">Batal</button>
+                                        @elseif ($confirmDismissReportId === $report->id)
+                                            <button wire:click="dismissReport({{ $report->id }})" class="text-xs px-2 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 transition">Tolak</button>
+                                            <button wire:click="$set('confirmDismissReportId', null)" class="text-xs px-2 py-1 bg-gray-200 dark:bg-[var(--surface-hover)] rounded transition">Batal</button>
+                                        @else
+                                            <button wire:click="$set('confirmResolveReportId', {{ $report->id }})" class="text-xs px-2 py-1 text-green-600 hover:bg-green-50 dark:hover:bg-green-500/10 rounded transition">Selesaikan</button>
+                                            <button wire:click="$set('confirmDismissReportId', {{ $report->id }})" class="text-xs px-2 py-1 text-[var(--text-secondary)] hover:bg-[var(--surface-hover)] rounded transition">Tolak</button>
+                                        @endif
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                @if ($reports->hasPages())
+                    <div class="mt-4">{{ $reports->links(data: ['scrollTo' => false]) }}</div>
+                @endif
             @endif
         </div>
     @endif

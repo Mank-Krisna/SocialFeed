@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Group;
 use App\Models\Post;
+use App\Models\Report;
 use App\Models\Story;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +20,8 @@ class AdminDashboard extends Component
     public string $postSearch = '';
     public ?int $confirmDeleteUserId = null;
     public ?int $confirmDeletePostId = null;
+    public ?int $confirmResolveReportId = null;
+    public ?int $confirmDismissReportId = null;
 
     protected $queryString = ['tab'];
 
@@ -53,6 +56,35 @@ class AdminDashboard extends Component
         $this->confirmDeletePostId = null;
     }
 
+    public function resolveReport(int $id): void
+    {
+        $report = Report::find($id);
+        if ($report) {
+            $report->update([
+                'status' => Report::STATUS_RESOLVED,
+                'resolved_by' => Auth::id(),
+                'resolved_at' => now(),
+            ]);
+            $report->reportable?->delete();
+            $this->dispatch('notify', message: 'Laporan diselesaikan dan konten dihapus', type: 'success');
+        }
+        $this->confirmResolveReportId = null;
+    }
+
+    public function dismissReport(int $id): void
+    {
+        $report = Report::find($id);
+        if ($report) {
+            $report->update([
+                'status' => Report::STATUS_DISMISSED,
+                'resolved_by' => Auth::id(),
+                'resolved_at' => now(),
+            ]);
+            $this->dispatch('notify', message: 'Laporan ditolak', type: 'info');
+        }
+        $this->confirmDismissReportId = null;
+    }
+
     public function render()
     {
         $stats = [
@@ -60,6 +92,7 @@ class AdminDashboard extends Component
             'posts' => Post::count(),
             'groups' => Group::count(),
             'stories' => Story::active()->count(),
+            'reports' => Report::pending()->count(),
         ];
 
         $perPage = (int) config('feed.per_page', 10);
@@ -67,10 +100,13 @@ class AdminDashboard extends Component
 
         $posts = Post::when($this->postSearch, fn ($q) => $q->where('body', 'like', "%{$this->postSearch}%"))->with('user')->latest()->paginate($perPage, pageName: 'postsPage');
 
+        $reports = Report::with(['reportable', 'reporter'])->latest()->paginate($perPage, pageName: 'reportsPage');
+
         return view('livewire.admin-dashboard', [
             'stats' => $stats,
             'users' => $users,
             'posts' => $posts,
+            'reports' => $reports,
         ]);
     }
 }

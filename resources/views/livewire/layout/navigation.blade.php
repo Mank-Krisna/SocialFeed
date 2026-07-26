@@ -44,17 +44,34 @@ new class extends Component
                     <span class="material-symbols-outlined {{ request()->routeIs('groups*') ? 'filled' : '' }}" aria-hidden="true">groups</span>
                     <span>Grup</span>
                 </a>
-                <a href="{{ route('messages') }}" wire:navigate class="px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition {{ request()->routeIs('messages') ? 'text-[var(--accent)] bg-[var(--accent-soft)]' : 'text-[var(--text-variant)] hover:bg-[var(--surface-hover)]' }}">
-                    <span class="material-symbols-outlined {{ request()->routeIs('messages') ? 'filled' : '' }}" aria-hidden="true">chat</span>
+                <a href="{{ route('messages') }}" wire:navigate class="px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold relative transition {{ request()->routeIs('messages*') ? 'text-[var(--accent)] bg-[var(--accent-soft)]' : 'text-[var(--text-variant)] hover:bg-[var(--surface-hover)]' }}">
+                    <span class="material-symbols-outlined {{ request()->routeIs('messages*') ? 'filled' : '' }}" aria-hidden="true">chat</span>
                     <span>Pesan</span>
-                </a>
-                <a href="{{ route('notifications') }}" wire:navigate class="px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold relative transition {{ request()->routeIs('notifications') ? 'text-[var(--accent)] bg-[var(--accent-soft)]' : 'text-[var(--text-variant)] hover:bg-[var(--surface-hover)]' }}">
-                    <span class="material-symbols-outlined {{ request()->routeIs('notifications') ? 'filled' : '' }}" aria-hidden="true">notifications</span>
-                    <span>Notifikasi</span>
-                    @if (auth()->user()->unreadNotificationsCount() > 0)
-                        <span class="w-2 h-2 rounded-full bg-red-500 absolute top-2 right-2"></span>
+                    @if (auth()->user()->unreadMessagesCount() > 0)
+                        <span class="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center px-1 text-[10px] font-bold text-white bg-red-500 rounded-full">{{ auth()->user()->unreadMessagesCount() > 99 ? '99+' : auth()->user()->unreadMessagesCount() }}</span>
                     @endif
                 </a>
+                <a href="{{ route('notifications') }}" wire:navigate class="px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold relative transition {{ request()->routeIs('notifications*') ? 'text-[var(--accent)] bg-[var(--accent-soft)]' : 'text-[var(--text-variant)] hover:bg-[var(--surface-hover)]' }}">
+                    <span class="material-symbols-outlined {{ request()->routeIs('notifications*') ? 'filled' : '' }}" aria-hidden="true">notifications</span>
+                    <span>Notifikasi</span>
+                    @if (auth()->user()->unreadNotificationsCount() > 0)
+                        <span class="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center px-1 text-[10px] font-bold text-white bg-red-500 rounded-full">{{ auth()->user()->unreadNotificationsCount() > 99 ? '99+' : auth()->user()->unreadNotificationsCount() }}</span>
+                    @endif
+                </a>
+                <a href="{{ route('hashtags.index') }}" wire:navigate class="px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition {{ request()->routeIs('hashtags.*') ? 'text-[var(--accent)] bg-[var(--accent-soft)]' : 'text-[var(--text-variant)] hover:bg-[var(--surface-hover)]' }}">
+                    <span class="material-symbols-outlined {{ request()->routeIs('hashtags.*') ? 'filled' : '' }}" aria-hidden="true">explore</span>
+                    <span>Jelajahi</span>
+                </a>
+                <a href="{{ route('bookmarks') }}" wire:navigate class="px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition {{ request()->routeIs('bookmarks') ? 'text-[var(--accent)] bg-[var(--accent-soft)]' : 'text-[var(--text-variant)] hover:bg-[var(--surface-hover)]' }}">
+                    <span class="material-symbols-outlined {{ request()->routeIs('bookmarks') ? 'filled' : '' }}" aria-hidden="true">bookmark</span>
+                    <span>Bookmark</span>
+                </a>
+                @if (auth()->user()->isAdmin())
+                    <a href="{{ route('admin') }}" wire:navigate class="px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition {{ request()->routeIs('admin*') ? 'text-[var(--accent)] bg-[var(--accent-soft)]' : 'text-[var(--text-variant)] hover:bg-[var(--surface-hover)]' }}">
+                        <span class="material-symbols-outlined {{ request()->routeIs('admin*') ? 'filled' : '' }}" aria-hidden="true">admin_panel_settings</span>
+                        <span>Admin</span>
+                    </a>
+                @endif
             </div>
 
             <!-- Right: User Dropdown -->
@@ -79,7 +96,11 @@ new class extends Component
                         </x-dropdown-link>
                         <x-dropdown-link :href="route('profile.edit')" wire:navigate class="flex items-center gap-2">
                             <span class="material-symbols-outlined text-lg" aria-hidden="true">settings</span>
-                            {{ __('Edit Pengaturan') }}
+                            {{ __('Edit Profil') }}
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="route('settings')" wire:navigate class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-lg" aria-hidden="true">tune</span>
+                            {{ __('Pengaturan') }}
                         </x-dropdown-link>
 
                         <div class="border-t border-[#e2e2e6] dark:border-[#2d2f34] mt-1 pt-1">
@@ -141,8 +162,12 @@ new class extends Component
                 <span class="material-symbols-outlined text-lg" aria-hidden="true">chat</span>
                 <span>Pesan</span>
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('bookmarks')" :active="request()->routeIs('bookmarks')" wire:navigate>
+                <span class="material-symbols-outlined text-lg" aria-hidden="true">bookmark</span>
+                <span>Bookmark</span>
+            </x-responsive-nav-link>
             @if (auth()->user()->isAdmin())
-                <x-responsive-nav-link :href="route('admin')" :active="request()->routeIs('admin')" wire:navigate>
+                <x-responsive-nav-link :href="route('admin')" :active="request()->routeIs('admin*')" wire:navigate>
                     <span class="material-symbols-outlined text-lg" aria-hidden="true">admin_panel_settings</span>
                     <span>Admin</span>
                 </x-responsive-nav-link>
@@ -191,16 +216,19 @@ new class extends Component
         <span class="text-[10px] font-bold">Grup</span>
     </a>
 
-    <a href="{{ route('messages') }}" wire:navigate class="flex flex-col items-center gap-0.5 py-1 px-2.5 rounded-xl transition {{ request()->routeIs('messages') ? 'text-[#0058bc]' : 'text-[#727785] dark:text-[#9ca3af] hover:text-[#1a1c1f] dark:hover:text-[#e2e2e6]' }}">
-        <span class="material-symbols-outlined text-xl sm:text-2xl {{ request()->routeIs('messages') ? 'filled' : '' }}" aria-hidden="true">chat</span>
+    <a href="{{ route('messages') }}" wire:navigate class="flex flex-col items-center gap-0.5 py-1 px-2.5 rounded-xl transition relative {{ request()->routeIs('messages*') ? 'text-[#0058bc]' : 'text-[#727785] dark:text-[#9ca3af] hover:text-[#1a1c1f] dark:hover:text-[#e2e2e6]' }}">
+        <span class="material-symbols-outlined text-xl sm:text-2xl {{ request()->routeIs('messages*') ? 'filled' : '' }}" aria-hidden="true">chat</span>
         <span class="text-[10px] font-bold">Pesan</span>
+        @if (auth()->user()->unreadMessagesCount() > 0)
+            <span class="absolute -top-0.5 right-1 min-w-[16px] h-[16px] flex items-center justify-center px-0.5 text-[9px] font-bold text-white bg-red-500 rounded-full">{{ auth()->user()->unreadMessagesCount() > 99 ? '99+' : auth()->user()->unreadMessagesCount() }}</span>
+        @endif
     </a>
 
-    <a href="{{ route('notifications') }}" wire:navigate class="flex flex-col items-center gap-0.5 py-1 px-2.5 rounded-xl transition relative {{ request()->routeIs('notifications') ? 'text-[#0058bc]' : 'text-[#727785] dark:text-[#9ca3af] hover:text-[#1a1c1f] dark:hover:text-[#e2e2e6]' }}">
-        <span class="material-symbols-outlined text-xl sm:text-2xl {{ request()->routeIs('notifications') ? 'filled' : '' }}" aria-hidden="true">notifications</span>
+    <a href="{{ route('notifications') }}" wire:navigate class="flex flex-col items-center gap-0.5 py-1 px-2.5 rounded-xl transition relative {{ request()->routeIs('notifications*') ? 'text-[#0058bc]' : 'text-[#727785] dark:text-[#9ca3af] hover:text-[#1a1c1f] dark:hover:text-[#e2e2e6]' }}">
+        <span class="material-symbols-outlined text-xl sm:text-2xl {{ request()->routeIs('notifications*') ? 'filled' : '' }}" aria-hidden="true">notifications</span>
         <span class="text-[10px] font-bold">Notif</span>
         @if (auth()->user()->unreadNotificationsCount() > 0)
-            <span class="w-2.5 h-2.5 rounded-full bg-red-500 border-2 border-white dark:border-[#1a1c1f] absolute top-1 right-2.5"></span>
+            <span class="absolute -top-0.5 right-1 min-w-[16px] h-[16px] flex items-center justify-center px-0.5 text-[9px] font-bold text-white bg-red-500 rounded-full">{{ auth()->user()->unreadNotificationsCount() > 99 ? '99+' : auth()->user()->unreadNotificationsCount() }}</span>
         @endif
     </a>
 

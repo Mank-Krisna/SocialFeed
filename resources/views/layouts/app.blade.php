@@ -5,7 +5,31 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'SocialFeed') }}</title>
+        {{-- SEO --}}
+        <title>@yield('title', config('app.name', 'SocialFeed'))</title>
+        <meta name="description" content="@yield('description', 'SocialFeed — Ruang Berbagi Indonesia. Platform media sosial untuk berbagi postingan, foto, cerita, dan berinteraksi dengan komunitas.')">
+        <meta name="robots" content="index, follow">
+        <link rel="canonical" href="{{ url()->current() }}">
+
+        {{-- Open Graph --}}
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="@yield('title', config('app.name', 'SocialFeed'))">
+        <meta property="og:description" content="@yield('description', 'SocialFeed — Ruang Berbagi Indonesia.')">
+        <meta property="og:image" content="{{ asset('images/logo.png') }}">
+        <meta property="og:url" content="{{ url()->current() }}">
+        <meta property="og:site_name" content="SocialFeed">
+        <meta property="og:locale" content="id_ID">
+
+        {{-- Twitter Card --}}
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="@yield('title', config('app.name', 'SocialFeed'))">
+        <meta name="twitter:description" content="@yield('description', 'SocialFeed — Ruang Berbagi Indonesia.')">
+        <meta name="twitter:image" content="{{ asset('images/logo.png') }}">
+
+        {{-- PWA --}}
+        <link rel="manifest" href="{{ asset('manifest.json') }}">
+        <meta name="theme-color" content="#0058bc">
+
         <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
 
         <script>if(localStorage.getItem('darkMode')==='true'){document.documentElement.classList.add('dark')}</script>
@@ -18,6 +42,12 @@
 
         <!-- Scripts & Styles -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <script>
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js').catch(() => {});
+            }
+        </script>
     </head>
     <body class="font-sans antialiased min-h-screen" x-data="{ toast: null, toastType: 'info' }" @notify.window="toast = $event.detail.message; toastType = $event.detail.type || 'info'; setTimeout(() => toast = null, 3500)">
         <div class="min-h-screen flex flex-col">

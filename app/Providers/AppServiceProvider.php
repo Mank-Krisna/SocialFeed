@@ -2,11 +2,18 @@
 
 namespace App\Providers;
 
+use App\Models\Comment;
 use App\Models\Friendship;
+use App\Models\Group;
 use App\Models\Hashtag;
+use App\Models\Post;
 use App\Models\User;
+use App\Policies\CommentPolicy;
+use App\Policies\GroupPolicy;
+use App\Policies\PostPolicy;
 use App\Services\UsernameGenerator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -19,6 +26,11 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // Register authorization policies
+        Gate::policy(Post::class, PostPolicy::class);
+        Gate::policy(Comment::class, CommentPolicy::class);
+        Gate::policy(Group::class, GroupPolicy::class);
+
         View::composer('components.right-sidebar', function ($view) {
             $user = Auth::user();
 

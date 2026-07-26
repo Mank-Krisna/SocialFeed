@@ -2,10 +2,12 @@
 
 namespace App\Livewire;
 
+use App\Events\PostLiked;
 use App\Models\Like;
 use App\Models\Post;
 use App\Services\NotificationService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
 class PostItem extends Component
@@ -45,6 +47,11 @@ class PostItem extends Component
             $this->likesCount++;
 
             app(NotificationService::class)->postLiked($this->post, Auth::user());
+
+            // Broadcast real-time notification to post owner (skip if liking own post)
+            if ($this->post->user_id !== $userId) {
+                PostLiked::dispatch($this->post, Auth::user());
+            }
         }
     }
 
@@ -55,11 +62,11 @@ class PostItem extends Component
 
     public function deletePost(): void
     {
-        if ($this->post->user_id === Auth::id()) {
-            $this->post->delete();
-            $this->dispatch('post-deleted');
-            $this->dispatch('notify', message: 'Postingan berhasil dihapus', type: 'success');
-        }
+        Gate::authorize('delete', $this->post);
+
+        $this->post->delete();
+        $this->dispatch('post-deleted');
+        $this->dispatch('notify', message: 'Postingan berhasil dihapus', type: 'success');
     }
 
     #[\Livewire\Attributes\On('comment-added')]
