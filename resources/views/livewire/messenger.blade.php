@@ -33,7 +33,7 @@
                             <img src="{{ $user->avatar_url }}" class="w-8 h-8 rounded-full object-cover shrink-0" />
                             <div class="min-w-0">
                                 <p class="text-xs font-semibold text-[#1a1c1f] dark:text-[#e2e2e6] truncate">{{ $user->name }}</p>
-                                <p class="text-[11px] text-[#727785] dark:text-[#9ca3af]">@ {{ $user->username ?? \Illuminate\Support\Str::slug($user->name) }}</p>
+                                <p class="text-[11px] text-[#727785] dark:text-[#9ca3af]">@ {{ e($user->username_display) }}</p>
                             </div>
                         </button>
                     @empty
@@ -97,7 +97,7 @@
                     <img src="{{ $other->avatar_url }}" class="w-8 h-8 rounded-full object-cover" />
                     <div class="min-w-0">
                         <p class="text-xs font-bold text-[#1a1c1f] dark:text-[#e2e2e6]">{{ $other->name }}</p>
-                        <p class="text-[10px] text-[#727785]">@ {{ $other->username ?? \Illuminate\Support\Str::slug($other->name) }}</p>
+                        <p class="text-[10px] text-[#727785]">@ {{ e($other->username_display) }}</p>
                     </div>
                 @endif
             </div>

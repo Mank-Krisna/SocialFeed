@@ -4,7 +4,7 @@
         <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" width="36" height="36" class="w-9 h-9 rounded-full object-cover shrink-0 border border-[var(--card-border)]" />
         <div class="min-w-0 flex-1">
             <h3 class="font-semibold text-sm text-[var(--text-primary)] truncate">{{ auth()->user()->name }}</h3>
-            <p class="text-[11px] text-[var(--text-secondary)] truncate">{{ '@' . (auth()->user()->username ?? Str::slug(auth()->user()->name)) }}</p>
+            <p class="text-[11px] text-[var(--text-secondary)] truncate">{{ '@' . e(auth()->user()->username_display) }}</p>
         </div>
     </a>
 

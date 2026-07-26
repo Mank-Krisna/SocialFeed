@@ -20,7 +20,7 @@
                                 <a href="{{ route('profile.show', $req->sender->username ?? $req->sender->id) }}" class="font-bold text-xs text-[#1a1c1f] truncate block hover:underline">
                                     {{ $req->sender->name }}
                                 </a>
-                                <p class="text-[11px] text-[#727785] truncate">{{ '@' . ($req->sender->username ?? Str::slug($req->sender->name)) }}</p>
+                                <p class="text-[11px] text-[#727785] truncate">{{ '@' . e($req->sender->username_display) }}</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-1 shrink-0">
@@ -53,7 +53,7 @@
                                 <a href="{{ route('profile.show', $item['user']->username ?? $item['user']->id) }}" wire:navigate class="font-bold text-xs text-[#1a1c1f] truncate block hover:underline">
                                     {{ $item['user']->name }}
                                 </a>
-                                <p class="text-[11px] text-[#727785] truncate">{{ '@' . ($item['user']->username ?? Str::slug($item['user']->name)) }}</p>
+                                <p class="text-[11px] text-[#727785] truncate">{{ '@' . e($item['user']->username_display) }}</p>
                             </div>
                         </div>
                         <button 
@@ -88,7 +88,7 @@
                                 <a href="{{ route('profile.show', $sug->username ?? $sug->id) }}" wire:navigate class="font-bold text-xs text-[#1a1c1f] truncate block hover:underline">
                                     {{ $sug->name }}
                                 </a>
-                                <p class="text-[11px] text-[#727785] truncate">{{ '@' . ($sug->username ?? Str::slug($sug->name)) }}</p>
+                                <p class="text-[11px] text-[#727785] truncate">{{ '@' . e($sug->username_display) }}</p>
                             </div>
                         </div>
                         <button wire:click="sendFriendRequest({{ $sug->id }})" class="px-2.5 py-1 bg-[#0058bc]/10 hover:bg-[#0058bc] hover:text-white text-[#0058bc] text-xs font-bold rounded-lg transition shrink-0">

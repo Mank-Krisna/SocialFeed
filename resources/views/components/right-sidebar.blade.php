@@ -14,7 +14,7 @@
                         </div>
                         <div class="min-w-0">
                             <p class="text-[11px] font-semibold text-[var(--text-primary)] truncate">{{ $suggested['name'] }}</p>
-                            <p class="text-[10px] text-[var(--text-secondary)] truncate">@{{ $suggested['username'] ?? \Illuminate\Support\Str::slug($suggested['name']) }}</p>
+                            <p class="text-[10px] text-[var(--text-secondary)] truncate">@<span>{{ $suggested['username_display'] }}</span></p>
                         </div>
                     </a>
                     <button wire:click="$dispatch('add-friend', { userId: {{ $suggested['id'] }} })" class="px-2 py-0.5 text-[10px] font-semibold text-[var(--accent)] bg-[var(--accent)]/10 hover:bg-[var(--accent)] hover:text-white rounded-lg transition shrink-0">

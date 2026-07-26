@@ -5,15 +5,6 @@ use Livewire\Volt\Component;
 
 new class extends Component
 {
-    public string $searchQuery = '';
-
-    public function performSearch(): void
-    {
-        if (trim($this->searchQuery) !== '') {
-            $this->redirect(route('search', ['q' => trim($this->searchQuery)]), navigate: true);
-        }
-    }
-
     public function logout(Logout $logout): void
     {
         $logout();
@@ -22,7 +13,7 @@ new class extends Component
 }; ?>
 
 <div>
-<nav x-data="{ open: false }" class="bg-white dark:bg-[#16181c] border-b border-[#e2e2e6] dark:border-[#2d2f34] sticky top-0 z-50">
+<nav x-data="{ open: false }" class="bg-[var(--nav-bg)] border-b border-[var(--card-border)] sticky top-0 z-40">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-4 lg:px-8">
         <div class="flex justify-between items-center h-16 gap-4">
             
@@ -33,16 +24,10 @@ new class extends Component
                     <span class="font-display tracking-tight hidden sm:inline-block">SocialFeed</span>
                 </a>
 
-                <!-- Search Input Bar -->
-                <form wire:submit.prevent="performSearch" class="relative w-full max-w-xs min-w-0">
-                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#727785] text-xl" aria-hidden="true">search</span>
-                    <input 
-                        type="text" 
-                        wire:model="searchQuery"
-                        placeholder="Cari di SocialFeed..." 
-                        class="w-full pl-10 pr-4 py-2 bg-[#f3f3f7] dark:bg-[#25282e] hover:bg-[#e2e2e6] dark:hover:bg-[#2d2f34] focus:bg-white dark:focus:bg-[#1a1c1f] text-sm text-[#1a1c1f] dark:text-[#e2e2e6] rounded-full border border-transparent focus:border-[#0058bc] focus:ring-1 focus:ring-[#0058bc] outline-none transition"
-                    />
-                </form>
+                <!-- Search Input Bar (hide on mobile, floating replaces it) -->
+                <div class="hidden sm:block w-full max-w-xs min-w-0">
+                    <x-search class="w-full flex items-center gap-2" />
+                </div>
             </div>
 
             <!-- Middle: Quick Links (Desktop) -->

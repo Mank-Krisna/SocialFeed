@@ -29,7 +29,7 @@
 
                 <div class="space-y-1">
                     <h2 class="text-lg sm:text-xl font-bold text-[#1a1c1f] dark:text-[#e2e2e6] tracking-tight">{{ $user->name }}</h2>
-                    <p class="text-xs text-[#727785] dark:text-[#9ca3af]">{{ '@' . ($user->username ?? Str::slug($user->name)) }}</p>
+                    <p class="text-xs text-[#727785] dark:text-[#9ca3af]">{{ '@' . e($user->username_display) }}</p>
                     
                     @if ($user->bio)
                         <p class="text-xs sm:text-sm text-[#414754] dark:text-[#b0b4be] pt-2 whitespace-pre-line leading-relaxed">{{ $user->bio }}</p>

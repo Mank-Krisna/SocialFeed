@@ -1,6 +1,7 @@
 import '@aejkatappaja/phantom-ui';
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
+import './search-float';
 
 // Register Alpine.js Intersect plugin on Livewire's Alpine instance
 import intersect from '@alpinejs/intersect';

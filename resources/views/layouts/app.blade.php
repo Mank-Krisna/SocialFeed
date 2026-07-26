@@ -24,6 +24,16 @@
             <!-- Navigation -->
             <livewire:layout.navigation />
 
+            <!-- Sentinel for floating search IntersectionObserver -->
+            <div id="header-sentinel" class="w-full h-px"></div>
+
+            <!-- Floating Search Bar (hidden until nav scrolls out) -->
+            <div id="floating-search" class="hidden fixed left-1/2 -translate-x-1/2 top-4 z-50 w-[min(720px,92%)] sm:w-3/4 md:w-1/2 lg:w-1/3">
+                <div class="bg-[var(--ivory-warm)] shadow-lg rounded-full p-2.5 flex items-center gap-2 border border-[var(--card-border)]">
+                    <x-search class="w-full flex items-center gap-2" />
+                </div>
+            </div>
+
             <!-- 3-Column Container -->
             <main class="flex-1 max-w-[1280px] w-full mx-auto px-3 sm:px-4 py-3 sm:py-4">
                 <div class="grid grid-cols-12 gap-4">

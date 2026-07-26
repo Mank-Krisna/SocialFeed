@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Friendship;
 use App\Models\Hashtag;
 use App\Models\User;
+use App\Services\UsernameGenerator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -38,10 +39,12 @@ class AppServiceProvider extends ServiceProvider
                 ->take(3)
                 ->get()
                 ->map(function ($suggested) use ($user) {
+                    $gen = app(UsernameGenerator::class);
                     return [
                         'id' => $suggested->id,
                         'name' => $suggested->name,
                         'username' => $suggested->username,
+                        'username_display' => e($suggested->username_display),
                         'avatar_url' => $suggested->avatar_url,
                         'initial' => strtoupper(substr($suggested->name, 0, 1)),
                     ];

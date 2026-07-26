@@ -40,6 +40,17 @@ class User extends Authenticatable
         ];
     }
 
+    public function getUsernameDisplayAttribute(): string
+    {
+        $raw = $this->attributes['username'] ?? null;
+
+        if ($raw !== null && $raw !== '' && !preg_match('/\{\{.*\}\}/', $raw)) {
+            return strip_tags($raw);
+        }
+
+        return app(\App\Services\UsernameGenerator::class)->generate($this->name, $raw);
+    }
+
     public function isAdmin(): bool
     {
         return $this->is_admin ?? false;

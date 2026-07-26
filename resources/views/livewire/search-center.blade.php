@@ -66,7 +66,7 @@
                                     <a href="{{ route('profile.show', $u->username ?? $u->id) }}" wire:navigate class="font-bold text-xs text-[#1a1c1f] truncate block hover:underline">
                                         {{ $u->name }}
                                     </a>
-                                    <p class="text-[11px] text-[#727785] truncate">{{ '@' . ($u->username ?? Str::slug($u->name)) }}</p>
+                                    <p class="text-[11px] text-[#727785] truncate">{{ '@' . e($u->username_display) }}</p>
                                 </div>
                             </div>
                             <a href="{{ route('profile.show', $u->username ?? $u->id) }}" wire:navigate class="px-3 py-1 bg-[#f3f3f7] hover:bg-[#0058bc] hover:text-white text-[#0058bc] text-xs font-bold rounded-lg transition shrink-0">
