@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id" x-data="{ dark: localStorage.getItem('darkMode') === 'true' }" x-init="$watch('dark', val => { localStorage.setItem('darkMode', val); document.documentElement.classList.toggle('dark', val) })" :class="{ 'dark': dark }">
     <head>
         <meta charset="utf-8">
@@ -28,7 +28,7 @@
 
         {{-- PWA --}}
         <link rel="manifest" href="{{ asset('manifest.json') }}">
-        <meta name="theme-color" content="#0058bc">
+        <meta name="theme-color" content="#1e1b4b">
 
         <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
 
@@ -37,7 +37,7 @@
         <!-- Fonts & Icons -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
 
         <!-- Scripts & Styles -->
@@ -81,7 +81,7 @@
                     <section class="col-span-12 lg:col-span-6 space-y-3">
                         <!-- Community Pulse Signature -->
                         <div class="card-elevation overflow-hidden">
-                            <div class="pulse-bar h-0.5 bg-gradient-to-r from-[var(--accent)] via-[#0070eb] to-[var(--accent-hover)]"></div>
+                            <div class="pulse-bar h-0.5 bg-gradient-to-r from-[var(--accent)] via-[var(--gold)] to-[var(--accent)]"></div>
                             <div class="px-3 py-1.5 flex items-center justify-between text-[11px]">
                                 <div class="flex items-center gap-2">
                                     <span class="relative flex h-2 w-2">
@@ -120,7 +120,8 @@
         </div>
 
         <template x-teleport="body">
-            <div x-show="toast" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-4" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] px-5 py-3 rounded-xl shadow-lg text-sm font-semibold flex items-center gap-2" :class="toastType === 'error' ? 'bg-red-600 text-white' : 'dark:bg-gray-800 bg-[#1a1c1f] text-white'" x-text="toast"></div>
+            <div x-show="toast" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-4" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] px-5 py-3 rounded-xl shadow-lg text-sm font-semibold flex items-center gap-2" :class="toastType === 'error' ? 'bg-red-600 text-white' : 'dark:bg-gray-800 bg-[var(--text-primary)] text-white'" x-text="toast"></div>
         </template>
     </body>
 </html>
+
