@@ -56,6 +56,49 @@ Target: developer baru yang baru pertama kali melihat codebase ini.
 
 ---
 
+## 1.5 Bootstrap Directory (`bootstrap/`)
+
+Laravel 13 tidak lagi menggunakan `RouteServiceProvider.php`. Semua konfigurasi routing, middleware, dan service provider sekarang berada di `bootstrap/`:
+
+| File | Fungsi | Detail |
+|------|--------|--------|
+| `bootstrap/app.php` | Application bootstrap | Routing, middleware, rate limiters, exception handling |
+| `bootstrap/providers.php` | Service provider registration | Array class providers yang di-load |
+| `bootstrap/cache/` | Compiled bootstrap cache | `packages.php`, `services.php` — auto-generated |
+
+### `bootstrap/app.php`
+
+File ini menggantikan `RouteServiceProvider` dari Laravel versi sebelumnya. Berisi:
+
+```php
+->withRouting(
+    web: __DIR__.'/../routes/web.php',
+    api: __DIR__.'/../routes/api.php',
+    commands: __DIR__.'/../routes/console.php',
+    channels: __DIR__.'/../routes/channels.php',
+    health: '/up',
+)
+->withMiddleware(function (Middleware $middleware) {
+    // Global middleware
+    // Route middleware aliases
+})
+->withExceptions(function (Exceptions $exceptions) {
+    // Exception handling
+})
+```
+
+### `bootstrap/providers.php`
+
+```php
+<?php
+return [
+    App\Providers\AppServiceProvider::class,
+    // Provider lain ditambahkan di sini
+];
+```
+
+---
+
 ## 2. App Directory Deep Dive (`app/`)
 
 ### `app/Http/Controllers/`
@@ -161,11 +204,11 @@ User klik/submit → Livewire wire:click/wire:submit
 
 ### `app/Providers/`
 
-| Provider | Fungsi |
-|----------|--------|
-| `AppServiceProvider` | Register services, boot logic (rate limiters, model observe) |
+| Provider | Fungsi | Catatan |
+|----------|--------|---------|
+| `AppServiceProvider` | Register services, boot logic | Rate limiters, model observers, global config |
 
-**Note:** Laravel 13 uses `bootstrap/app.php` for routing, middleware, and rate limiters — no separate RouteServiceProvider needed. `bootstrap/providers.php` lists all providers (currently only AppServiceProvider).
+> **Note:** Laravel 13 tidak lagi menggunakan `RouteServiceProvider`. Routing didefinisikan di `bootstrap/app.php`. Middleware juga diregister di `bootstrap/app.php`, bukan di `Kernel.php`.
 
 ---
 
@@ -283,6 +326,37 @@ Route autentikasi (login, register, password reset, email verification).
 Broadcasting channels:
 - `user.{id}` — Private channel notifikasi per user
 - `conversation.{id}` — Private channel percakapan (hanya participant)
+
+### Route Registration
+
+Di Laravel 13, route tidak lagi diregister di `RouteServiceProvider`. Sebaliknya, di `bootstrap/app.php`:
+
+```php
+->withRouting(
+    web: __DIR__.'/../routes/web.php',
+    api: __DIR__.'/../routes/api.php',
+    commands: __DIR__.'/../routes/console.php',
+    channels: __DIR__.'/../routes/channels.php',
+    health: '/up',
+)
+```
+
+Route `health: '/up'` adalah Laravel Pulse health check endpoint.
+
+### Middleware Registration
+
+Middleware global dan route middleware aliases didaftarkan di `bootstrap/app.php`:
+
+```php
+->withMiddleware(function (Middleware $middleware) {
+    $middleware->alias([
+        'auth' => \App\Http\Middleware\Authenticate::class,
+        // custom middleware aliases
+    ]);
+});
+```
+
+Bukan lagi di `app/Http/Kernel.php` (file ini tidak ada di Laravel 13).
 
 ---
 
