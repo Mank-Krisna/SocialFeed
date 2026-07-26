@@ -14,7 +14,7 @@ Target: developer baru yang baru pertama kali melihat codebase ini.
 | `.env` | Konfigurasi environment lokal | Saat development | Jangan di-commit |
 | `.env.example` | Template environment | Setup project baru | Commit ke repo |
 | `.env.production.example` | Template production | Deploy ke server | Beda dengan .env.example |
-| `composer.json` | Dependency PHP | `composer install` | Laravel 11, Livewire 3 |
+| `composer.json` | Dependency PHP | `composer install` | Requires PHP ^8.3, Laravel ^13.8, Livewire ^3.6 |
 | `package.json` | Dependency JS/Node | `npm install` | Vite, Tailwind, Alpine.js |
 | `vite.config.js` | Konfigurasi build tool | `npm run dev` / `npm run build` | Entry: app.css + app.js |
 | `tailwind.config.js` | Design system & tema | Build CSS | Custom palette #0058bc |
@@ -31,6 +31,7 @@ Target: developer baru yang baru pertama kali melihat codebase ini.
 | `.gitignore` | File diabaikan Git | Setiap commit | node_modules, vendor, .env |
 | `.editorconfig` | Standar format file | Editing | Consistent indentation |
 | `.npmrc` | Konfigurasi npm | `npm install` | Registry settings |
+| `.phpunit.result.cache` | PHPUnit cache | Test runs | Auto-generated, don't commit |
 
 ### Folder Root
 
@@ -42,6 +43,7 @@ Target: developer baru yang baru pertama kali melihat codebase ini.
 | `database/` | Database layer | Migrations, factories, seeders |
 | `docker/` | Config Docker | nginx.conf, supervisord.conf |
 | `docs/` | Dokumentasi project | ADR, reports, guides |
+| `design/` | Desain assets | socialfigma figma exports, logo |
 | `public/` | Document root web server | index.php, assets, uploads |
 | `resources/` | Frontend assets | Views (Blade), CSS, JS |
 | `routes/` | Routing definitions | web.php, api.php, channels.php |
@@ -163,6 +165,8 @@ User klik/submit → Livewire wire:click/wire:submit
 |----------|--------|
 | `AppServiceProvider` | Register services, boot logic (rate limiters, model observe) |
 
+**Note:** Laravel 13 uses `bootstrap/app.php` for routing, middleware, and rate limiters — no separate RouteServiceProvider needed. `bootstrap/providers.php` lists all providers (currently only AppServiceProvider).
+
 ---
 
 ## 3. Config Directory (`config/`)
@@ -171,12 +175,14 @@ User klik/submit → Livewire wire:click/wire:submit
 |------|--------|-------------|
 | `app.php` | Konfigurasi aplikasi | name, env, debug, url |
 | `auth.php` | Autentikasi | guards, providers |
+| `broadcasting.php` | Broadcasting config | connections (pusher) |
 | `cache.php` | Caching | stores (file/redis) |
 | `database.php` | Database | connections (sqlite/mysql) |
 | `feed.php` | **Custom config** | per_page, max_media_mb, rate limits |
 | `filesystems.php` | File storage | disks (local/public/s3) |
 | `livewire.php` | Livewire config | class_map, update_url |
 | `logging.php` | Logging | channels (stack, daily) |
+| `mail.php` | Mail config | drivers, from address |
 | `queue.php` | Queue worker | connections (redis/sync) |
 | `session.php` | Session | driver (file/redis), lifetime |
 | `services.php` | Third-party | pusher, meilisearch |
