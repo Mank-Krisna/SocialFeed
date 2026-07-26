@@ -13,40 +13,34 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Outfit', ...defaultTheme.fontFamily.sans],
-                display: ['Plus Jakarta Sans', ...defaultTheme.fontFamily.sans],
+                sans: ['Inter', ...defaultTheme.fontFamily.sans],
+                display: ['Sora', ...defaultTheme.fontFamily.sans],
             },
             colors: {
                 primary: {
-                    DEFAULT: '#1e1b4b',
-                    hover: '#15133a',
-                    light: '#312e81',
-                    container: '#e8e6f0',
+                    DEFAULT: '#0058bc',
+                    hover: '#004493',
+                    container: '#0070eb',
                 },
-                accent: {
-                    DEFAULT: '#c9a84c',
-                    hover: '#b8963f',
-                    container: '#fdf8ec',
-                },
-                background: '#faf8f5',
+                background: '#f9f9fd',
                 surface: {
                     DEFAULT: '#ffffff',
-                    dim: '#d9d6d0',
-                    bright: '#faf8f5',
+                    dim: '#d9dade',
+                    bright: '#f9f9fd',
                     lowest: '#ffffff',
-                    low: '#f5f3f0',
-                    container: '#ededea',
-                    high: '#e8e5e0',
-                    highest: '#e2e0db',
+                    low: '#f3f3f7',
+                    container: '#ededf1',
+                    high: '#e8e8ec',
+                    highest: '#e2e2e6',
                 },
                 on: {
                     surface: '#1a1c1f',
-                    'surface-variant': '#4a4540',
+                    'surface-variant': '#414754',
                     primary: '#ffffff',
                 },
                 outline: {
-                    DEFAULT: '#6b6560',
-                    variant: '#c8c3bc',
+                    DEFAULT: '#727785',
+                    variant: '#c1c6d6',
                 }
             },
         },

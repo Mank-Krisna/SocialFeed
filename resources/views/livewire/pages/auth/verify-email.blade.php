@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 use App\Livewire\Actions\Logout;
 use Illuminate\Support\Facades\Auth;
@@ -51,9 +51,8 @@ new #[Layout('layouts.guest')] class extends Component
             {{ __('Resend Verification Email') }}
         </x-primary-button>
 
-        <button wire:click="logout" type="submit" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--accent)]">
+        <button wire:click="logout" type="submit" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0058bc]">
             {{ __('Log Out') }}
         </button>
     </div>
 </div>
-

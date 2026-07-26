@@ -1,4 +1,4 @@
-﻿<div class="space-y-3">
+<div class="space-y-3">
     <!-- Suggested Connections Card -->
     <div class="card-elevation p-3 space-y-2">
         <h4 class="font-bold text-sm text-[var(--text-primary)] flex items-center justify-between">
@@ -9,7 +9,7 @@
             @forelse ($suggestedUsers as $suggested)
                 <div class="flex items-center justify-between gap-1.5">
                     <a href="{{ route('profile.show', $suggested['username'] ?? $suggested['id']) }}" wire:navigate class="flex items-center gap-1.5 min-w-0 flex-1">
-                        <div class="w-7 h-7 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--gold)] text-white flex items-center justify-center font-bold text-[10px] shrink-0">
+                        <div class="w-7 h-7 rounded-full bg-gradient-to-br from-[var(--accent)] to-[#0070eb] text-white flex items-center justify-center font-bold text-[10px] shrink-0">
                             {{ $suggested['initial'] }}
                         </div>
                         <div class="min-w-0">
@@ -36,7 +36,7 @@
         <div class="space-y-1.5">
             @foreach ($trendingHashtags as $idx => $tag)
                 @php
-                    $colors = ['bg-[var(--accent)]', 'bg-[var(--gold)]', 'bg-[var(--accent-hover)]'];
+                    $colors = ['bg-[var(--accent)]', 'bg-[#0070eb]', 'bg-[var(--accent-hover)]'];
                     $rankColor = $colors[$idx] ?? 'bg-[var(--surface-hover)]';
                     $textColor = $idx < 3 ? 'text-white' : 'text-[var(--text-variant)]';
                 @endphp
@@ -52,4 +52,3 @@
     </div>
     @endif
 </div>
-

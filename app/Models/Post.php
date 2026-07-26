@@ -103,13 +103,13 @@ class Post extends Model
 
         $text = preg_replace(
             '/(?<!\w|&)#([\w]+)/u',
-            '<a href="/search?q=%23$1" class="text-[var(--accent)] hover:underline font-semibold" wire:navigate>#$1</a>',
+            '<a href="/search?q=%23$1" class="text-[#0058bc] hover:underline font-semibold" wire:navigate>#$1</a>',
             $text
         );
 
         $text = preg_replace(
             '/(?<!\w|&|@)@([\w\-\.]+)/u',
-            '<a href="/profile/$1" class="text-[var(--accent)] hover:underline font-semibold" wire:navigate>@$1</a>',
+            '<a href="/profile/$1" class="text-[#0058bc] hover:underline font-semibold" wire:navigate>@$1</a>',
             $text
         );
 

@@ -24,53 +24,47 @@
 }
 
 :root {
-  --bg-page: #faf8f5;
+  --bg-page: #f9f9fd;
   --text-primary: #1a1c1f;
-  --text-secondary: #6b6560;
-  --text-variant: #4a4540;
+  --text-secondary: #727785;
+  --text-variant: #414754;
   --card-bg: #ffffff;
-  --card-border: #e8e5e0;
-  --surface-hover: #f5f3f0;
+  --card-border: #e2e2e6;
+  --surface-hover: #f3f3f7;
   --nav-bg: #ffffff;
   --drawer-bg: #ffffff;
   --mobile-bar: #ffffff;
-  --skeleton-base: #e8e5e0;
-  --skeleton-shine: #f5f3f0;
-  --accent: #1e1b4b;
-  --accent-hover: #15133a;
-  --accent-container: #e8e6f0;
-  --accent-soft: rgba(30, 27, 75, 0.08);
-  --accent-soft-dark: rgba(30, 27, 75, 0.12);
-  --gold: #c9a84c;
-  --gold-hover: #b8963f;
-  --gold-container: #fdf8ec;
+  --skeleton-base: #e2e2e6;
+  --skeleton-shine: #f0f2f5;
+  --accent: #0058bc;
+  --accent-hover: #004493;
+  --accent-container: #f0f4ff;
+  --accent-soft: rgba(0, 88, 188, 0.1);
+  --accent-soft-dark: rgba(0, 88, 188, 0.15);
   --ivory-warm: #fdf6ec;
-  --hover-lift: 0 4px 16px rgba(26, 28, 31, 0.08);
+  --hover-lift: 0 4px 16px rgba(0, 0, 0, 0.07);
 }
 
 .dark {
   --bg-page: #0f1117;
-  --text-primary: #e8e5e0;
-  --text-secondary: #9a9590;
-  --text-variant: #b8b3ae;
+  --text-primary: #e2e2e6;
+  --text-secondary: #9ca3af;
+  --text-variant: #b0b4be;
   --card-bg: #1a1c1f;
-  --card-border: #2d2a26;
-  --surface-hover: #252320;
+  --card-border: #2d2f34;
+  --surface-hover: #25282e;
   --nav-bg: #16181c;
   --drawer-bg: #16181c;
   --mobile-bar: #16181ce5;
-  --skeleton-base: #252320;
-  --skeleton-shine: #2d2a26;
-  --accent: #8b85c9;
-  --accent-hover: #a5a0d8;
-  --accent-container: #1e1b3a;
-  --accent-soft: rgba(139, 133, 201, 0.15);
-  --accent-soft-dark: rgba(139, 133, 201, 0.2);
-  --gold: #d4b85c;
-  --gold-hover: #c9a84c;
-  --gold-container: #1e1b10;
-  --ivory-warm: #22201b;
-  --hover-lift: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --skeleton-base: #25282e;
+  --skeleton-shine: #2d2f34;
+  --accent: #0058bc;
+  --accent-hover: #004493;
+  --accent-container: #1a2332;
+  --accent-soft: rgba(0, 88, 188, 0.2);
+  --accent-soft-dark: rgba(0, 88, 188, 0.25);
+  --ivory-warm: #22242b;
+  --hover-lift: 0 4px 16px rgba(0, 0, 0, 0.25);
 }
 
 .dark .card-elevation {
@@ -78,14 +72,14 @@
 }
 
 body {
-  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: var(--bg-page);
   color: var(--text-primary);
   transition: background-color 0.2s, color 0.2s;
 }
 
 .font-display {
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-family: 'Sora', system-ui, -apple-system, sans-serif;
 }
 
 /* Community pulse gradient bar */
@@ -95,9 +89,9 @@ body {
 }
 
 .pulse-bar {
-  background: linear-gradient(90deg, #1e1b4b, #312e81, #c9a84c, #1e1b4b);
+  background: linear-gradient(90deg, #0058bc, #0070eb, #004493, #0058bc);
   background-size: 300% 100%;
-  animation: pulse-gradient 8s ease-in-out infinite;
+  animation: pulse-gradient 6s ease-in-out infinite;
 }
 
 /* Pulse dot animation */
@@ -115,7 +109,7 @@ body {
   background-color: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: 0.75rem;
-  box-shadow: 0 1px 3px rgba(26, 28, 31, 0.04);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
   transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s ease;
 }
 
@@ -216,7 +210,7 @@ body {
 }
 .avatar-hover:hover {
   transform: scale(1.05);
-  box-shadow: 0 2px 8px rgba(26, 28, 31, 0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 /* Input focus glow */
@@ -231,52 +225,6 @@ body {
 }
 .icon-nudge .material-symbols-outlined {
   transition: transform 0.15s ease;
-}
-
-/* ---- Landing page specific ---- */
-
-.hero-gradient {
-  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #4338ca 70%, #c9a84c 100%);
-}
-
-.hero-text-gradient {
-  background: linear-gradient(135deg, #c9a84c 0%, #e8d48b 50%, #c9a84c 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Batik-inspired ornamental divider */
-.ornament-divider {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem 0;
-}
-
-.ornament-divider::before,
-.ornament-divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--card-border), transparent);
-}
-
-.ornament-dot {
-  width: 6px;
-  height: 6px;
-  background: var(--gold);
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-/* Feature card hover */
-.feature-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.feature-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(26, 28, 31, 0.1);
 }
 
 /* Respect reduced motion */
