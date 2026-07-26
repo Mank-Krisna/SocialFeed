@@ -18,14 +18,14 @@ new class extends Component
         <div class="flex justify-between items-center h-16 gap-4">
             
             <!-- Left: Logo & Search -->
-            <div class="flex items-center gap-3 sm:gap-5 flex-1 max-w-lg min-w-0">
+            <div class="flex items-center gap-3 sm:gap-5 shrink-0">
                 <a href="{{ route('feed') }}" wire:navigate class="flex items-center gap-2.5 font-bold text-xl text-[var(--accent)] shrink-0">
                     <img src="{{ asset('images/logo.png') }}" alt="SocialFeed Logo" width="36" height="36" class="w-9 h-9 rounded-xl object-cover shadow-sm border border-slate-100">
                     <span class="font-display tracking-tight hidden sm:inline-block">SocialFeed</span>
                 </a>
 
                 <!-- Search Input Bar (hide on mobile, floating replaces it) -->
-                <div class="hidden sm:block w-full max-w-xs min-w-0">
+                <div class="hidden sm:block w-64 lg:w-72">
                     <x-search class="w-full flex items-center gap-2" />
                 </div>
             </div>
