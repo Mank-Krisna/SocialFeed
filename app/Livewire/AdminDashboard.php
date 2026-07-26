@@ -62,9 +62,10 @@ class AdminDashboard extends Component
             'stories' => Story::active()->count(),
         ];
 
-        $users = User::when($this->userSearch, fn ($q) => $q->where('name', 'like', "%{$this->userSearch}%")->orWhere('email', 'like', "%{$this->userSearch}%"))->latest()->paginate(10, pageName: 'usersPage');
+        $perPage = (int) config('feed.per_page', 10);
+        $users = User::when($this->userSearch, fn ($q) => $q->where('name', 'like', "%{$this->userSearch}%")->orWhere('email', 'like', "%{$this->userSearch}%"))->latest()->paginate($perPage, pageName: 'usersPage');
 
-        $posts = Post::when($this->postSearch, fn ($q) => $q->where('body', 'like', "%{$this->postSearch}%"))->with('user')->latest()->paginate(10, pageName: 'postsPage');
+        $posts = Post::when($this->postSearch, fn ($q) => $q->where('body', 'like', "%{$this->postSearch}%"))->with('user')->latest()->paginate($perPage, pageName: 'postsPage');
 
         return view('livewire.admin-dashboard', [
             'stats' => $stats,

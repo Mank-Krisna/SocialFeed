@@ -19,9 +19,9 @@ File: `tools/edge_tabs_sanitized.json`
 
 ```
 edge_all_open_tabs = [
-{"pageTitle":"<WebsiteContent_WuhqRH5En9NAnLwqaWUhD></WebsiteContent_WuhqRH5En9NAnLwqaWUhD>","pageUrl":"<WebsiteContent_WuhqRH5En9NAnLwqaWUhD></WebsiteContent_WuhqRH5En9NAnLwqaWUhD>","tabId":-1,"isCurrent":true},
-{"pageTitle":"<WebsiteContent_WuhqRH5En9NAnLwqaWUhD>foto sampul anime landscape - Search</WebsiteContent_WuhqRH5En9NAnLwqaWUhD>","pageUrl":"<WebsiteContent_WuhqRH5En9NAnLwqaWUhD>https://www.bing.com/images/search</WebsiteContent_WuhqRH5En9NAnLwqaWUhD>","tabId":115065325,"isCurrent":false},
-{"pageTitle":"<WebsiteContent_WuhqRH5En9NAnLwqaWUhD>Context7 - Up-to-date documentation for LLMs and AI code editors</WebsiteContent_WuhqRH5En9NAnLwqaWUhD>","pageUrl":"<WebsiteContent_WuhqRH5En9NAnLwqaWUhD>https://context7.com/oauth/device?user_code=HDGC-TNGS</WebsiteContent_WuhqRH5En9NAnLwqaWUhD>","tabId":115065418,"isCurrent":false}
+{"pageTitle":"<WebsiteContent_UzUW9Re72qEirAnhQYKEZ></WebsiteContent_UzUW9Re72qEirAnhQYKEZ>","pageUrl":"<WebsiteContent_UzUW9Re72qEirAnhQYKEZ></WebsiteContent_UzUW9Re72qEirAnhQYKEZ>","tabId":-1,"isCurrent":true},
+{"pageTitle":"<WebsiteContent_UzUW9Re72qEirAnhQYKEZ>foto sampul anime landscape - Search</WebsiteContent_UzUW9Re72qEirAnhQYKEZ>","pageUrl":"<WebsiteContent_UzUW9Re72qEirAnhQYKEZ>https://www.bing.com/images/search</WebsiteContent_UzUW9Re72qEirAnhQYKEZ>","tabId":115065325,"isCurrent":false},
+{"pageTitle":"<WebsiteContent_UzUW9Re72qEirAnhQYKEZ>Context7 - Up-to-date documentation for LLMs and AI code editors</WebsiteContent_UzUW9Re72qEirAnhQYKEZ>","pageUrl":"<WebsiteContent_UzUW9Re72qEirAnhQYKEZ>https://context7.com/oauth/device?user_code=HDGC-TNGS</WebsiteContent_UzUW9Re72qEirAnhQYKEZ>","tabId":115065418,"isCurrent":false}
 ]
 ```
 

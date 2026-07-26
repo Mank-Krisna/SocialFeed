@@ -59,7 +59,7 @@
 
             {{-- Infinite scroll sentinel --}}
             @if ($hasMore)
-                <div 
+                <div id="feed-sentinel"
                     x-intersect="$wire.loadMore()"
                     class="flex justify-center pt-2 pb-4"
                 >

@@ -13,6 +13,8 @@ class GroupDetail extends Component
     public Group $group;
     public int $perPage;
 
+    protected $listeners = ['feed:loadMore' => 'loadMore'];
+
     public function mount(Group $group): void
     {
         $this->group = $group;

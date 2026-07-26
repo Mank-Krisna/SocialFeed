@@ -12,6 +12,10 @@ class Feed extends Component
     public string $filter = 'all';
     public int $perPage;
 
+    protected $queryString = ['filter'];
+
+    protected $listeners = ['feed:loadMore' => 'loadMore'];
+
     public function mount(): void
     {
         $this->perPage = (int) config('feed.per_page', 10);
