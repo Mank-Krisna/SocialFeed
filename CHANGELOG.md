@@ -2,6 +2,40 @@
 
 All notable changes to SocialFeed will be documented in this file.
 
+## [1.0.1] — 2026-07-26
+
+### Fixed
+- Auth double-hashing: RegisterController no longer calls Hash::make() (model 'hashed' cast handles it)
+- Bookmarks page: query Post directly via whereHas instead of SavedPost relationship
+- Hashtag pages: column is `name` not `tag`
+- Nav search overlap: fixed to fixed width w-64 lg:w-72
+- Nav positioning: removed flex-1 from left section
+- Mobile drawer: replaced hardcoded colors with CSS variables
+- Mobile bottom nav: added pb-20 md:pb-4 padding
+- Messenger page: converted to Livewire component wrapper
+- Parse error: added @auth wrapper for mobile drawer and bottom nav
+
+### Added
+- NotificationsDropdown Livewire component (compact popover in nav)
+- messages.blade.php wrapper for Livewire messenger component
+- Session report: docs/Session_Report_2026-07-26.md
+
+### Changed
+- Notifications: desktop uses dropdown popover instead of full page
+- UserFactory, DatabaseSeeder, LargeDataSetSeeder: plain text passwords (model cast handles hashing)
+
+### Removed
+- resources/resources/ (nested duplicate)
+- stitch_ai_logo_generator.zip + folder
+- stitch_socialfeed_branding_design/ (logo already copied)
+- screen.png, DESIGN.md, Pagination_Diagnostics.md, skills-lock.json
+- tools/ (debug/archive files)
+- .phpunit.result.cache, public/hot, public/logo.png (duplicate)
+- app/Notifications/ (WelcomeNotification, WeeklyDigestNotification - never dispatched)
+- app/Events/ (FriendRequestSent, FriendRequestAccepted, CommentPosted - never dispatched)
+- resources/views/dashboard.blade.php (unused)
+- resources/js/search-float.js (never referenced)
+
 ## [1.0.0] — 2026-07-26
 
 ### Added
