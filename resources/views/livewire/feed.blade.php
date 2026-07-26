@@ -1,6 +1,7 @@
 <div class="space-y-3">
     <!-- Stories -->
     <livewire:story-section />
+    <livewire:story-viewer />
 
     <!-- Post Creation Box -->
     <livewire:create-post />

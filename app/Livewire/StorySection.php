@@ -14,8 +14,6 @@ class StorySection extends Component
     use WithFileUploads;
 
     public $stories;
-    public $activeStory = null;
-    public $storyIndex = 0;
     public $showUploadForm = false;
     public $mediaFile;
     public $caption = '';
@@ -47,63 +45,6 @@ class StorySection extends Component
                 ];
             })
             ->values();
-    }
-
-    public function openStory(int $groupId, int $storyIdx = 0): void
-    {
-        $group = $this->stories[$groupId] ?? null;
-        if (!$group) return;
-
-        $this->activeStory = [
-            'groupId' => $groupId,
-            'storyIdx' => $storyIdx,
-            'stories' => $group['stories']->toArray(),
-            'user' => [
-                'id' => $group['user']->id,
-                'name' => $group['user']->name,
-                'avatar_url' => $group['user']->avatar_url,
-            ],
-        ];
-        $this->storyIndex = $storyIdx;
-        $this->markViewed($group['stories'][$storyIdx]->id);
-    }
-
-    public function nextStory(): void
-    {
-        if (!$this->activeStory) return;
-        $stories = $this->activeStory['stories'];
-        $next = $this->storyIndex + 1;
-
-        if ($next < count($stories)) {
-            $this->storyIndex = $next;
-            $this->markViewed($stories[$next]['id']);
-            $this->activeStory['storyIdx'] = $next;
-        } else {
-            $this->closeStory();
-        }
-    }
-
-    public function prevStory(): void
-    {
-        if (!$this->activeStory || $this->storyIndex <= 0) return;
-        $prev = $this->storyIndex - 1;
-        $this->storyIndex = $prev;
-        $this->activeStory['storyIdx'] = $prev;
-    }
-
-    public function closeStory(): void
-    {
-        $this->activeStory = null;
-        $this->storyIndex = 0;
-        $this->loadStories();
-    }
-
-    public function markViewed(int $storyId): void
-    {
-        StoryView::firstOrCreate([
-            'story_id' => $storyId,
-            'user_id' => Auth::id(),
-        ]);
     }
 
     public function toggleUploadForm(): void
