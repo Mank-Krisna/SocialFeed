@@ -1,0 +1,38 @@
+=== perPage / paginate occurrences ===
+
+app/Livewire/Feed.php:17        $this->perPage = (int) config('feed.per_page', 10);
+app/Livewire/Feed.php:24        $this->perPage = (int) config('feed.per_page', 10);
+app/Livewire/Feed.php:29        $this->perPage += (int) config('feed.per_page', 10);
+app/Livewire/Feed.php:35        $this->perPage = (int) config('feed.per_page', 10);
+app/Livewire/Feed.php:59        $posts = (clone $query)->take($this->perPage + 1)->get();
+app/Livewire/Feed.php:60        $hasMore = $posts->count() > $this->perPage;
+app/Livewire/Feed.php:61        $posts = $hasMore ? $posts->take($this->perPage) : $posts;
+  → Custom infinite scroll (take N+1 pattern). No paginator. No queryString.
+
+app/Livewire/GroupDetail.php:19  $this->perPage = (int) config('feed.per_page', 10);
+app/Livewire/GroupDetail.php:46  $this->perPage = (int) config('feed.per_page', 10);
+app/Livewire/GroupDetail.php:51  $this->perPage += (int) config('feed.per_page', 10);
+app/Livewire/GroupDetail.php:74  $posts = (clone $query)->take($this->perPage + 1)->get();
+app/Livewire/GroupDetail.php:75  $hasMore = $posts->count() > $this->perPage;
+app/Livewire/GroupDetail.php:76  $posts = $hasMore ? $posts->take($this->perPage) : $posts;
+  → Custom infinite scroll. No paginator. No queryString.
+
+app/Livewire/AdminDashboard.php:65  ->paginate(10, pageName: 'usersPage')
+app/Livewire/AdminDashboard.php:67  ->paginate(10, pageName: 'postsPage')
+  → Uses Laravel paginator. Hardcoded 10. No config('feed.per_page').
+
+config/feed.php:7  'per_page' => env('FEED_PER_PAGE', 10),
+  → Centralized config (already done).
+
+=== resetPage / queryString occurrences ===
+
+app/Livewire/AdminDashboard.php:23  protected $queryString = ['tab'];
+app/Livewire/AdminDashboard.php:35  $this->resetPage();
+  → Already uses queryString and resetPage.
+
+=== sentinel occurrences ===
+
+resources/views/layouts/app.blade.php:28  <div id="header-sentinel"...
+resources/views/livewire/feed.blade.php:60  {{-- Infinite scroll sentinel --}}
+resources/js/search-float.js:5  const sentinel = document.getElementById('header-sentinel')
+  → header-sentinel is for floating search, not feed sentinel.

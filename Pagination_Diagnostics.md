@@ -124,3 +124,7 @@ npm run build                 # If assets changed
 - [x] GroupDetail posts are paginated
 - [x] Sentinel is inside feed container (duplicate removed)
 - [x] Floating search (`z-50`) does not overlap sentinel (sentinel is at bottom of feed)
+- [x] `tools/paginate_occurrences.txt` — static scan of perPage/paginate/resetPage/sentinel across codebase
+- [x] `tools/pagination_runtime_report.json` — runtime endpoint verification for feed, groups, profile
+- [x] `resources/js/feed-sentinel.js` — IntersectionObserver fallback for infinite scroll
+- [x] `resources/js/app.js` imports feed-sentinel.js
