@@ -116,7 +116,7 @@ class StorySection extends Component
     public function uploadStory(): void
     {
         $this->validate([
-            'mediaFile' => 'required|image|max:10240',
+            'mediaFile' => 'required|file|mimes:jpg,jpeg,png,mp4,mov|max:51200',
             'caption' => 'nullable|string|max:200',
         ]);
 

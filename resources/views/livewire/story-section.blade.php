@@ -1,7 +1,10 @@
 <div wire:poll.30s="loadStories" class="card-elevation p-3 overflow-hidden">
     {{-- Story viewer modal --}}
     @if ($activeStory)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/80" wire:click.self="closeStory">
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/80" wire:click.self="closeStory"
+             x-data="{ progress: 0, timer: null }"
+             x-init="timer = setInterval(() => { progress += 2; if(progress >= 100) { $wire.nextStory(); progress = 0; } }, 100);"
+             @close-story-viewer.window="clearInterval(timer);">
             <div class="relative w-full max-w-md mx-4 bg-[#1a1c1f] rounded-2xl overflow-hidden shadow-2xl">
                 {{-- Header --}}
                 <div class="absolute top-0 inset-x-0 z-10 p-3 flex items-center gap-3 bg-gradient-to-b from-black/60 to-transparent">
@@ -17,13 +20,25 @@
                 {{-- Progress bar --}}
                 <div class="absolute top-0 inset-x-0 z-10 flex gap-1 p-1.5 pt-1">
                     @foreach ($activeStory['stories'] as $i => $s)
-                        <div class="flex-1 h-0.5 rounded-full {{ $i <= $storyIndex ? 'bg-white' : 'bg-white/30' }}"></div>
+                        <div class="flex-1 h-0.5 rounded-full bg-white/30">
+                            @if ($i < $storyIndex)
+                                <div class="h-full bg-white rounded-full" style="width: 100%"></div>
+                            @elseif ($i === $storyIndex)
+                                <div class="h-full bg-white rounded-full transition-all duration-100" :style="`width: ${progress}%`"></div>
+                            @endif
+                        </div>
                     @endforeach
                 </div>
 
-                {{-- Image --}}
+                {{-- Image/Video --}}
                 <div class="flex items-center justify-center min-h-[60vh] max-h-[80vh]">
-                    <img src="{{ Storage::url($activeStory['stories'][$storyIndex]['media_path'] ?? '') }}" alt="" class="w-full h-full object-contain">
+                    @if(in_array(pathinfo($activeStory['stories'][$storyIndex]['media_path'] ?? '', PATHINFO_EXTENSION), ['mp4', 'mov']))
+                        <video src="{{ Storage::url($activeStory['stories'][$storyIndex]['media_path'] ?? '') }}" 
+                               class="w-full h-full object-contain" autoplay muted playsinline
+                               x-init="$el.play()"></video>
+                    @else
+                        <img src="{{ Storage::url($activeStory['stories'][$storyIndex]['media_path'] ?? '') }}" alt="" class="w-full h-full object-contain">
+                    @endif
                 </div>
 
                 {{-- Caption --}}
@@ -49,7 +64,7 @@
         <div class="mb-3 p-3 bg-[#f8f9fa] dark:bg-[#25282e] rounded-xl space-y-3">
             <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true" x-on:livewire-upload-finish="uploading = false" x-on:livewire-upload-error="uploading = false" x-on:livewire-upload-progress="progress = $event.detail.progress" class="space-y-3">
                 <label class="block text-sm font-semibold text-[#414754] dark:text-[#b0b4be]">Pilih foto atau video</label>
-                <input type="file" wire:model="mediaFile" accept="image/*" class="block w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#0058bc] file:text-white hover:file:bg-[#004493]">
+                <input type="file" wire:model="mediaFile" accept="image/*,video/*" class="block w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#0058bc] file:text-white hover:file:bg-[#004493]">
                 <div x-show="uploading" class="w-full bg-gray-200 rounded-full h-2">
                     <div class="bg-[#0058bc] h-2 rounded-full" x-bind:style="`width: ${progress}%`"></div>
                 </div>
