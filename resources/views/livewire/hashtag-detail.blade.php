@@ -4,7 +4,7 @@
             <span class="material-symbols-outlined text-xl">tag</span>
         </div>
         <div>
-            <h1 class="font-display font-bold text-lg text-[var(--text-primary)]">#{{ $hashtag->tag }}</h1>
+            <h1 class="font-display font-bold text-lg text-[var(--text-primary)]">#{{ $hashtag->name }}</h1>
             <p class="text-xs text-[var(--text-secondary)]">{{ $hashtag->posts_count ?? $posts->total() }} postingan</p>
         </div>
     </div>

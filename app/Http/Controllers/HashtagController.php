@@ -19,8 +19,8 @@ class HashtagController extends Controller
 
     public function show(string $tag)
     {
-        $hashtag = Hashtag::where('tag', $tag)->firstOrFail();
-        $posts = Post::whereHas('hashtags', fn ($q) => $q->where('tag', $tag))
+        $hashtag = Hashtag::where('name', $tag)->firstOrFail();
+        $posts = Post::whereHas('hashtags', fn ($q) => $q->where('name', $tag))
             ->withFeedRelations(auth()->id())
             ->latest()
             ->paginate(15);
