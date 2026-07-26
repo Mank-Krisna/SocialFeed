@@ -190,7 +190,7 @@ User klik/submit → Livewire wire:click/wire:submit
 | Model | Tabel | Relasi Utama | $fillable | Catatan |
 |-------|-------|-------------|-----------|---------|
 | `User` | `users` | posts, likes, comments, notifications, groups, conversations, stories, savedPosts | name, username, email, password, bio, avatar, cover_photo | `'password' => 'hashed'` cast |
-| `Post` | `posts` | user, group, media, likes, comments, parent (repost), poll, hashtags, savedByUsers | user_id, group_id, parent_id, body | SoftDeletes, Searchable |
+| `Post` | `posts` | user, group, media, likes, comments, parent (repost), poll, hashtags, savedByUsers | user_id, group_id, parent_id, body | SoftDeletes, Searchable, getBodyHtmlAttribute() — parse & sanitize body HTML |
 | `Comment` | `comments` | user, post, parent (nested) | user_id, post_id, parent_id, body | — |
 | `Like` | `likes` | user, post | user_id, post_id | — |
 | `Group` | `groups` | creator, members, posts | user_id, name, slug, description, photo, type | Searchable |
@@ -238,6 +238,26 @@ User klik/submit → Livewire wire:click/wire:submit
 
 > **Note:** Laravel 13 tidak lagi menggunakan `RouteServiceProvider`. Routing didefinisikan di `bootstrap/app.php`. Middleware juga diregister di `bootstrap/app.php`, bukan di `Kernel.php`.
 
+### `app/View/Components/`
+
+Class-based Blade components (bukan Livewire). Dipakai via `<x-component-name />` di Blade.
+
+| Component | Fungsi |
+|-----------|--------|
+| `AppLayout` | Layout untuk halaman auth (guest) |
+| `GuestLayout` | Layout untuk halaman publik |
+
+> **Bedanya dengan Livewire:** Components ini tidak punya state PHP, hanya UI + props.
+
+### `app/Http/Middleware/`
+
+Custom middleware. Di Laravel 13, middleware diregister di `bootstrap/app.php` via `->withMiddleware()`, bukan di `Kernel.php` (file `Kernel.php` tidak ada di Laravel 13).
+
+| Middleware | Fungsi |
+|-----------|--------|
+| `Authenticate` | Redirect guest ke login |
+| `RedirectIfAuthenticated` | Redirect auth user ke home |
+
 ---
 
 ## 3. Config Directory (`config/`)
@@ -279,7 +299,7 @@ User klik/submit → Livewire wire:click/wire:submit
 | `create_posts_table` | posts | user_id, body, parent_id, group_id, soft_deletes |
 | `create_likes_table` | likes | user_id, post_id |
 | `create_comments_table` | comments | user_id, post_id, parent_id, body |
-| `create_post_images_table` | post_media | post_id, path, type |
+| `create_post_images_table` | post_media (migration name: create_post_images_table) | post_id, path, type |
 | `create_friendships_table` | friendships | sender_id, receiver_id, status |
 | `create_app_notifications_table` | notifications | user_id, sender_id, type, data, read_at |
 | `align_post_media_and_notifications` | (alter tables) | — |
@@ -296,6 +316,8 @@ User klik/submit → Livewire wire:click/wire:submit
 | `add_is_admin_to_users` | users | is_admin |
 | `add_feed_indexes` | (indexes) | Performance indexes |
 | `create_reports_table` | reports | Polymorphic reportable |
+
+> **Note:** Beberapa migration memiliki nama file yang berbeda dengan nama tabel akhir. Contoh: migration `create_post_images_table` membuat tabel `post_media` (sesuai konvensi Model `PostMedia`).
 
 ### Factories
 
@@ -322,7 +344,7 @@ User klik/submit → Livewire wire:click/wire:submit
 | GET | `/` | welcome view | — | — |
 | GET | `/feed` | feed view (Livewire) | `feed` | auth |
 | GET | `/dashboard` | redirect ke /feed | `dashboard` | — |
-| GET | `/profile/edit` | profile view | `profile.edit` | auth |
+| GET | `/profile/edit` | profile.blade.php (contains Livewire profile components inline) | `profile.edit` | auth |
 | GET | `/profile/{user?}` | UserProfileController@show | `profile.show` | auth |
 | GET | `/posts/{post}` | PostController@show | `posts.show` | auth |
 | GET | `/groups` | groups view (Livewire) | `groups` | auth |
@@ -345,9 +367,30 @@ User klik/submit → Livewire wire:click/wire:submit
 | PUT | `/settings/password` | SettingsController@updatePassword | `settings.password` | auth |
 | DELETE | `/settings` | SettingsController@destroy | `settings.destroy` | auth |
 
+> **Note:** Halaman `/profile/edit` tidak menggunakan Controller method. Sebaliknya, view `profile.blade.php` langsung menampilkan 3 Livewire components: `Profile/UpdateProfileInformationForm`, `Profile/UpdatePasswordForm`, dan `Profile/DeleteUserForm`.
+
 ### `routes/auth.php`
 
-Route autentikasi (login, register, password reset, email verification).
+Route autentikasi bawaan Laravel Breeze. Di-include otomatis di `bootstrap/app.php`.
+
+| Method | URI | Target | Name |
+|--------|-----|--------|------|
+| GET | `/login` | LoginController@show | `login` |
+| POST | `/login` | LoginController@login | — |
+| POST | `/logout` | LoginController@logout | `logout` |
+| GET | `/register` | RegisterController@show | `register` |
+| POST | `/register` | RegisterController@register | — |
+| GET | `/forgot-password` | PasswordResetLinkController@create | `password.request` |
+| POST | `/forgot-password` | PasswordResetLinkController@store | `password.email` |
+| GET | `/reset-password/{token}` | NewPasswordController@create | `password.reset` |
+| POST | `/reset-password` | NewPasswordController@store | `password.store` |
+| GET | `/verify-email` | VerifyEmailController@notice | `verification.notice` |
+| GET | `/verify-email/{id}/{hash}` | VerifyEmailController@verify | `verification.verify` |
+| POST | `/email/verification-notification` | EmailVerificationNotificationController@store | `verification.send` |
+| GET | `/confirm-password` | ConfirmablePasswordController@show | `password.confirm` |
+| POST | `/confirm-password` | ConfirmablePasswordController@store | — |
+
+> **Note:** Controller di atas berada di `app/Http/Controllers/Auth/`.
 
 ### `routes/channels.php`
 
