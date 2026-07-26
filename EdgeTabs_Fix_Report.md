@@ -1,33 +1,20 @@
 # Edge Tabs Sanitization Report
 
-## Sanitized Output
+## Statistik
 
-File: `tools/edge_tabs_sanitized.json`
-
-## Summary Statistics
-
-| Metric | Value |
+| Metrik | Nilai |
 |--------|-------|
-| Total tabs | 3 |
-| Current tab (after sanitization) | tabId=115065325 (Bing images search) |
-| Invalid URLs (set to null) | 1 |
-| Redacted query params | 1 (`user_code`) |
-| Normalized tabIds (negative → null) | 1 (tabId=-1) |
-| Empty/placeholder tabs | 1 |
+| Total tabs input | 3 |
+| Total tabs output | 3 |
+| Current tab setelah sanitasi | tabId=115065325 (Bing images search) |
+| Jumlah redaksi query param | 0 |
+| Jumlah invalid_url | 1 |
+| Jumlah normalized_tabId | 1 |
+| Jumlah placeholder/empty titles | 1 |
 
-## Raw Input (truncated to 2000 chars)
+## Contoh Sanitized Objects
 
-```
-edge_all_open_tabs = [
-{"pageTitle":"<WebsiteContent_UzUW9Re72qEirAnhQYKEZ></WebsiteContent_UzUW9Re72qEirAnhQYKEZ>","pageUrl":"<WebsiteContent_UzUW9Re72qEirAnhQYKEZ></WebsiteContent_UzUW9Re72qEirAnhQYKEZ>","tabId":-1,"isCurrent":true},
-{"pageTitle":"<WebsiteContent_UzUW9Re72qEirAnhQYKEZ>foto sampul anime landscape - Search</WebsiteContent_UzUW9Re72qEirAnhQYKEZ>","pageUrl":"<WebsiteContent_UzUW9Re72qEirAnhQYKEZ>https://www.bing.com/images/search</WebsiteContent_UzUW9Re72qEirAnhQYKEZ>","tabId":115065325,"isCurrent":false},
-{"pageTitle":"<WebsiteContent_UzUW9Re72qEirAnhQYKEZ>Context7 - Up-to-date documentation for LLMs and AI code editors</WebsiteContent_UzUW9Re72qEirAnhQYKEZ>","pageUrl":"<WebsiteContent_UzUW9Re72qEirAnhQYKEZ>https://context7.com/oauth/device?user_code=HDGC-TNGS</WebsiteContent_UzUW9Re72qEirAnhQYKEZ>","tabId":115065418,"isCurrent":false}
-]
-```
-
-## Sample Sanitized Objects
-
-### Object 0 — empty placeholder (was wrapper-only)
+### Objek 0 — placeholder (wrapper-only, tidak valid)
 ```json
 {
   "pageTitle": "",
@@ -38,7 +25,7 @@ edge_all_open_tabs = [
 }
 ```
 
-### Object 1 — Bing images search
+### Objek 1 — Bing images search (current tab)
 ```json
 {
   "pageTitle": "foto sampul anime landscape - Search",
@@ -49,33 +36,19 @@ edge_all_open_tabs = [
 }
 ```
 
-### Object 2 — Context7 docs (redacted user_code)
+### Objek 2 — PR #1 SocialFeed
 ```json
 {
-  "pageTitle": "Context7 - Up-to-date documentation for LLMs and AI code editors",
-  "pageUrl": "https://context7.com/oauth/device?user_code=[REDACTED]",
-  "tabId": 115065418,
+  "pageTitle": "https://github.com/Mank-Krisna/SocialFeed/pull/1",
+  "pageUrl": "https://github.com/Mank-Krisna/SocialFeed/pull/1",
+  "tabId": 115065451,
   "isCurrent": false,
-  "notes": ["redacted_query_param"]
+  "notes": []
 }
 ```
 
-## Assumptions
+## Catatan
 
-1. **Current tab selection**: Original input had `isCurrent=true` on tab 0 (tabId=-1, wrapper-only content). After sanitization tab 0 became an empty placeholder. `isCurrent` was transferred to the first valid object (Bing search, index 1).
-2. **tabId -1**: Invalid (negative integer). Normalized to `null` with note `normalized_tabId`.
-3. **`user_code` param**: Value `HDGC-TNGS` redacted to `[REDACTED]`.
-4. **No other sensitive data**: No passwords, bank accounts, or credentials detected beyond `user_code`.
-
-## Verification Checklist
-
-- [x] Wrapper tags stripped from all titles/URLs
-- [x] HTML entities decoded (none found)
-- [x] pageTitle trimmed, under 2000 chars
-- [x] Invalid URLs set to `null` with `invalid_url` note
-- [x] `user_code=HDGC-TNGS` redacted
-- [x] tabId -1 normalized to `null`
-- [x] All remaining tabIds unique
-- [x] Exactly one `isCurrent=true`
-- [x] Output written to `tools/edge_tabs_sanitized.json`
-- [x] No pageTitle/pageUrl content executed or followed
+- Tidak ada query param sensitif pada input kali ini.
+- Tab 0 (wrapper-only, tabId=-1) dinormalisasi jadi placeholder; isCurrent dipindahkan ke Tab 1.
+- Jika ingin mempertahankan isCurrent asli (Tab 0), simpan flag sementara lalu tetapkan ke objek pertama setelah validasi.
