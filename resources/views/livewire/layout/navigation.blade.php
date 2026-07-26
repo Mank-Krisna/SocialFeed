@@ -19,7 +19,7 @@ new class extends Component
             
             <!-- Left: Logo & Search -->
             <div class="flex items-center gap-3 sm:gap-5 flex-1 max-w-lg min-w-0">
-                <a href="{{ route('feed') }}" wire:navigate class="flex items-center gap-2.5 font-bold text-xl text-[#0058bc] shrink-0">
+                <a href="{{ route('feed') }}" wire:navigate class="flex items-center gap-2.5 font-bold text-xl text-[var(--accent)] shrink-0">
                     <img src="{{ asset('images/logo.png') }}" alt="SocialFeed Logo" width="36" height="36" class="w-9 h-9 rounded-xl object-cover shadow-sm border border-slate-100">
                     <span class="font-display tracking-tight hidden sm:inline-block">SocialFeed</span>
                 </a>
@@ -32,23 +32,23 @@ new class extends Component
 
             <!-- Middle: Quick Links (Desktop) -->
             <div class="hidden md:flex items-center space-x-1 lg:space-x-2">
-                <a href="{{ route('feed') }}" wire:navigate class="px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold {{ request()->routeIs('feed') ? 'text-[#0058bc] bg-[#0058bc]/10' : 'text-[#414754] dark:text-[#b0b4be] hover:bg-[#f3f3f7] dark:hover:bg-[#25282e]' }}">
+                <a href="{{ route('feed') }}" wire:navigate class="px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition {{ request()->routeIs('feed') ? 'text-[var(--accent)] bg-[var(--accent-soft)]' : 'text-[var(--text-variant)] hover:bg-[var(--surface-hover)]' }}">
                     <span class="material-symbols-outlined {{ request()->routeIs('feed') ? 'filled' : '' }}" aria-hidden="true">home</span>
                     <span>Feed</span>
                 </a>
-                <a href="{{ route('friends') }}" wire:navigate class="px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold {{ request()->routeIs('friends') ? 'text-[#0058bc] bg-[#0058bc]/10' : 'text-[#414754] dark:text-[#b0b4be] hover:bg-[#f3f3f7] dark:hover:bg-[#25282e]' }}">
+                <a href="{{ route('friends') }}" wire:navigate class="px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition {{ request()->routeIs('friends') ? 'text-[var(--accent)] bg-[var(--accent-soft)]' : 'text-[var(--text-variant)] hover:bg-[var(--surface-hover)]' }}">
                     <span class="material-symbols-outlined {{ request()->routeIs('friends') ? 'filled' : '' }}" aria-hidden="true">group</span>
                     <span>Teman</span>
                 </a>
-                <a href="{{ route('groups') }}" wire:navigate class="px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold {{ request()->routeIs('groups*') ? 'text-[#0058bc] bg-[#0058bc]/10' : 'text-[#414754] dark:text-[#b0b4be] hover:bg-[#f3f3f7] dark:hover:bg-[#25282e]' }}">
+                <a href="{{ route('groups') }}" wire:navigate class="px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition {{ request()->routeIs('groups*') ? 'text-[var(--accent)] bg-[var(--accent-soft)]' : 'text-[var(--text-variant)] hover:bg-[var(--surface-hover)]' }}">
                     <span class="material-symbols-outlined {{ request()->routeIs('groups*') ? 'filled' : '' }}" aria-hidden="true">groups</span>
                     <span>Grup</span>
                 </a>
-                <a href="{{ route('messages') }}" wire:navigate class="px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold {{ request()->routeIs('messages') ? 'text-[#0058bc] bg-[#0058bc]/10' : 'text-[#414754] dark:text-[#b0b4be] hover:bg-[#f3f3f7] dark:hover:bg-[#25282e]' }}">
+                <a href="{{ route('messages') }}" wire:navigate class="px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition {{ request()->routeIs('messages') ? 'text-[var(--accent)] bg-[var(--accent-soft)]' : 'text-[var(--text-variant)] hover:bg-[var(--surface-hover)]' }}">
                     <span class="material-symbols-outlined {{ request()->routeIs('messages') ? 'filled' : '' }}" aria-hidden="true">chat</span>
                     <span>Pesan</span>
                 </a>
-                <a href="{{ route('notifications') }}" wire:navigate class="px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold relative {{ request()->routeIs('notifications') ? 'text-[#0058bc] bg-[#0058bc]/10' : 'text-[#414754] dark:text-[#b0b4be] hover:bg-[#f3f3f7] dark:hover:bg-[#25282e]' }}">
+                <a href="{{ route('notifications') }}" wire:navigate class="px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold relative transition {{ request()->routeIs('notifications') ? 'text-[var(--accent)] bg-[var(--accent-soft)]' : 'text-[var(--text-variant)] hover:bg-[var(--surface-hover)]' }}">
                     <span class="material-symbols-outlined {{ request()->routeIs('notifications') ? 'filled' : '' }}" aria-hidden="true">notifications</span>
                     <span>Notifikasi</span>
                     @if (auth()->user()->unreadNotificationsCount() > 0)
@@ -61,17 +61,17 @@ new class extends Component
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center gap-2 px-3 py-1.5 border border-[#e2e2e6] dark:border-[#2d2f34] text-sm font-medium rounded-full text-[#1a1c1f] dark:text-[#e2e2e6] bg-white dark:bg-[#1a1c1f] hover:bg-[#f3f3f7] dark:hover:bg-[#25282e] focus:outline-none transition">
-                            <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" width="32" height="32" class="w-8 h-8 rounded-full object-cover" />
-                            <span class="font-semibold text-xs text-[#1a1c1f] dark:text-[#e2e2e6]" x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></span>
-                            <span class="material-symbols-outlined text-lg text-[#727785] dark:text-[#9ca3af]" aria-hidden="true">expand_more</span>
+                        <button class="inline-flex items-center gap-2 px-3 py-1.5 border border-[var(--card-border)] text-sm font-medium rounded-full text-[var(--text-primary)] bg-[var(--card-bg)] hover:bg-[var(--surface-hover)] focus:outline-none transition btn-press">
+                            <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" width="32" height="32" class="w-8 h-8 rounded-full object-cover avatar-hover" />
+                            <span class="font-semibold text-xs text-[var(--text-primary)]" x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></span>
+                            <span class="material-symbols-outlined text-lg text-[var(--text-secondary)]" aria-hidden="true">expand_more</span>
                         </button>
                     </x-slot>
 
                     <x-slot name="content">
-                        <div class="px-4 py-2 border-b border-[#e2e2e6] dark:border-[#2d2f34]">
-                            <div class="font-bold text-sm text-[#1a1c1f] dark:text-[#e2e2e6]">{{ auth()->user()->name }}</div>
-                            <div class="text-xs text-[#727785] dark:text-[#9ca3af] truncate">{{ auth()->user()->email }}</div>
+                        <div class="px-4 py-2 border-b border-[var(--card-border)]">
+                            <div class="font-bold text-sm text-[var(--text-primary)]">{{ auth()->user()->name }}</div>
+                            <div class="text-xs text-[var(--text-secondary)] truncate">{{ auth()->user()->email }}</div>
                         </div>
                         <x-dropdown-link :href="route('profile.show', auth()->user()->username ?? auth()->id())" wire:navigate class="flex items-center gap-2">
                             <span class="material-symbols-outlined text-lg" aria-hidden="true">account_circle</span>

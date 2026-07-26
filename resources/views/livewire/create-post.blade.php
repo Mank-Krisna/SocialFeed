@@ -12,7 +12,7 @@
                     wire:model.live="body" 
                     rows="3" 
                     placeholder="Apa yang Anda pikirkan, {{ auth()->user()->name }}?" 
-                    class="w-full p-2.5 bg-[var(--surface-hover)] focus:bg-[var(--card-bg)] text-sm text-[var(--text-primary)] rounded-xl border border-transparent focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] outline-none resize-none transition"
+                    class="w-full p-2.5 bg-[var(--surface-hover)] focus:bg-[var(--card-bg)] text-sm text-[var(--text-primary)] rounded-xl border border-transparent focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] outline-none resize-none transition input-glow"
                 ></textarea>
                 @error('body')
                     <span class="text-xs text-red-600 font-medium">{{ $message }}</span>
@@ -91,7 +91,7 @@
             <button 
                 type="submit" 
                 wire:loading.attr="disabled"
-                class="px-4 py-1.5 bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white text-sm font-bold rounded-lg transition disabled:opacity-50 flex items-center gap-1 shadow-sm"
+                class="px-4 py-1.5 bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white text-sm font-bold rounded-lg transition btn-press disabled:opacity-50 flex items-center gap-1 shadow-sm"
             >
                 <span wire:loading.remove wire:target="submit" aria-hidden="true" class="material-symbols-outlined text-base">send</span>
                 <span wire:loading wire:target="submit" aria-hidden="true" class="material-symbols-outlined text-base animate-spin">progress_activity</span>

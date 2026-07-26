@@ -13,7 +13,7 @@
                     src="{{ $post->user->avatar_url }}" 
                     alt="{{ $post->user->name }}" 
                     width="40" height="40"
-                    class="w-10 h-10 rounded-full object-cover border border-[var(--card-border)] hover:opacity-90 transition"
+                    class="w-10 h-10 rounded-full object-cover border border-[var(--card-border)] avatar-hover"
                 />
             </a>
             <div>
@@ -101,7 +101,7 @@
         <button 
             wire:click="toggleLike" 
             wire:loading.attr="disabled"
-            class="py-1.5 rounded-xl flex items-center justify-center gap-1 text-sm font-semibold transition active:scale-90 disabled:opacity-50 {{ $isLiked ? 'text-[var(--accent)] bg-[var(--accent)]/10' : 'text-[var(--text-secondary)] hover:bg-[var(--surface-hover)]' }}"
+            class="py-1.5 rounded-xl flex items-center justify-center gap-1 text-sm font-semibold transition btn-press disabled:opacity-50 {{ $isLiked ? 'text-[var(--accent)] bg-[var(--accent)]/10' : 'text-[var(--text-secondary)] hover:bg-[var(--surface-hover)]' }}"
             x-on:click="$el.querySelector('.material-symbols-outlined').classList.add('animate-like-bounce'); setTimeout(() => $el.querySelector('.material-symbols-outlined').classList.remove('animate-like-bounce'), 350)"
         >
             <span aria-hidden="true" class="material-symbols-outlined text-xl {{ $isLiked ? 'filled' : '' }}">thumb_up</span>
@@ -109,7 +109,7 @@
 
         <button 
             wire:click="toggleComments" 
-            class="py-1.5 rounded-xl flex items-center justify-center gap-1 text-sm font-semibold text-[var(--text-secondary)] hover:bg-[var(--surface-hover)] active:scale-90 transition"
+            class="py-1.5 rounded-xl flex items-center justify-center gap-1 text-sm font-semibold text-[var(--text-secondary)] hover:bg-[var(--surface-hover)] btn-press transition"
         >
             <span aria-hidden="true" class="material-symbols-outlined text-xl">chat_bubble</span>
         </button>
