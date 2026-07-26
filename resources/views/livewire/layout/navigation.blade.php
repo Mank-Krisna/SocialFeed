@@ -1,17 +1,3 @@
-<?php
-
-use App\Livewire\Actions\Logout;
-use Livewire\Volt\Component;
-
-new class extends Component
-{
-    public function logout(Logout $logout): void
-    {
-        $logout();
-        $this->redirect('/', navigate: true);
-    }
-}; ?>
-
 <div>
 <nav x-data="{ open: false }" class="bg-[var(--nav-bg)] border-b border-[var(--card-border)] sticky top-0 z-40">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-4 lg:px-8">
