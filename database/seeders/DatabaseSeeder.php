@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        $pass = Hash::make('password');
+        // Password plain text — User model 'hashed' cast handles hashing
+        $pass = 'password';
 
         // ── Users ──
         $budi = User::create(['name' => 'Budi Santoso',      'username' => 'budis',     'email' => 'demo@socialfeed.com', 'password' => $pass, 'bio' => 'Full-stack Web Developer & Tech Enthusiast. Suka membangun aplikasi modern dengan Laravel 11 & Livewire 3. 🚀', 'is_admin' => true]);

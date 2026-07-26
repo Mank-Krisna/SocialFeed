@@ -85,7 +85,7 @@ class LargeDataSetSeeder extends Seeder
     private function seedUsers(): array
     {
         $now = now();
-        $password = Hash::make('password');
+        $password = 'password'; // User model 'hashed' cast handles hashing
         $rows = [];
         for ($i = 0; $i < self::USER_COUNT; $i++) {
             $name = fake()->name();

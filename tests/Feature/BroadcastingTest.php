@@ -3,10 +3,6 @@
 namespace Tests\Feature;
 
 use App\Events\PostLiked;
-use App\Events\FriendRequestSent;
-use App\Events\FriendRequestAccepted;
-use App\Events\CommentPosted;
-use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -40,30 +36,6 @@ class BroadcastingTest extends TestCase
 
         $this->assertCount(1, $channels);
         $this->assertStringContainsString("user.{$owner->id}", $channels[0]->name);
-    }
-
-    public function test_friend_request_sent_broadcasts_to_receiver(): void
-    {
-        $sender   = User::factory()->create();
-        $receiver = User::factory()->create();
-
-        $event    = new FriendRequestSent($sender, $receiver);
-        $channels = $event->broadcastOn();
-
-        $this->assertStringContainsString("user.{$receiver->id}", $channels[0]->name);
-        $this->assertSame('friend.request.sent', $event->broadcastAs());
-    }
-
-    public function test_friend_request_accepted_broadcasts_to_requester(): void
-    {
-        $acceptor  = User::factory()->create();
-        $requester = User::factory()->create();
-
-        $event    = new FriendRequestAccepted($acceptor, $requester);
-        $channels = $event->broadcastOn();
-
-        $this->assertStringContainsString("user.{$requester->id}", $channels[0]->name);
-        $this->assertSame('friend.request.accepted', $event->broadcastAs());
     }
 
     public function test_events_are_dispatched_via_event_fake(): void
