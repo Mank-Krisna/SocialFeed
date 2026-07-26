@@ -11,10 +11,12 @@ use Livewire\Component;
 class GroupDetail extends Component
 {
     public Group $group;
+    public int $perPage;
 
     public function mount(Group $group): void
     {
         $this->group = $group;
+        $this->perPage = (int) config('feed.per_page', 10);
     }
 
     public function joinGroup(): void
@@ -41,7 +43,12 @@ class GroupDetail extends Component
     #[On('post-deleted')]
     public function refreshPosts(): void
     {
-        // Re-render
+        $this->perPage = (int) config('feed.per_page', 10);
+    }
+
+    public function loadMore(): void
+    {
+        $this->perPage += (int) config('feed.per_page', 10);
     }
 
     public function render()
@@ -50,16 +57,31 @@ class GroupDetail extends Component
         $isMember = $this->group->isMember($user);
         $canViewPosts = ($this->group->type === 'public') || $isMember;
 
-        $posts = $canViewPosts
-            ? Post::where('group_id', $this->group->id)->withFeedRelations($user?->id)->latest()->get()
-            : collect();
+        if (!$canViewPosts) {
+            return view('livewire.group-detail', [
+                'isMember' => $isMember,
+                'canViewPosts' => false,
+                'posts' => collect(),
+                'hasMore' => false,
+                'members' => $this->group->members()->take(10)->get(),
+            ]);
+        }
+
+        $query = Post::where('group_id', $this->group->id)
+            ->withFeedRelations($user?->id)
+            ->latest();
+
+        $posts = (clone $query)->take($this->perPage + 1)->get();
+        $hasMore = $posts->count() > $this->perPage;
+        $posts = $hasMore ? $posts->take($this->perPage) : $posts;
 
         $members = $this->group->members()->take(10)->get();
 
         return view('livewire.group-detail', [
             'isMember' => $isMember,
-            'canViewPosts' => $canViewPosts,
+            'canViewPosts' => true,
             'posts' => $posts,
+            'hasMore' => $hasMore,
             'members' => $members,
         ]);
     }

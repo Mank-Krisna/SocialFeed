@@ -91,7 +91,4 @@
             @endif
         </div>
     </div>
-
-    {{-- Infinite scroll sentinel --}}
-    <div id="feed-sentinel" class="w-full h-4"></div>
 </div>

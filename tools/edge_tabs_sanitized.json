@@ -1,0 +1,36 @@
+{
+  "sanitized_at": "2026-07-26T10:19:00+07:00",
+  "total_tabs": 3,
+  "anomalies": [
+    {
+      "tabId": -1,
+      "issue": "negative_or_invalid_tabId",
+      "pageTitle": "empty_after_sanitization",
+      "pageUrl": "empty_after_sanitization"
+    }
+  ],
+  "tabs": [
+    {
+      "tabId": -1,
+      "pageTitle": "",
+      "pageUrl": "",
+      "isCurrent": true,
+      "note": "tabId negative; title and URL were entirely wrapper tags"
+    },
+    {
+      "tabId": 115065325,
+      "pageTitle": "foto sampul anime landscape - Search",
+      "pageUrl": "https://www.bing.com/images/search",
+      "isCurrent": false,
+      "note": "clean; no sensitive params detected"
+    },
+    {
+      "tabId": 115065418,
+      "pageTitle": "Context7 - Up-to-date documentation for LLMs and AI code editors",
+      "pageUrl": "https://context7.com/oauth/device",
+      "isCurrent": false,
+      "note": "user_code param redacted from original URL",
+      "redacted_params": ["user_code"]
+    }
+  ]
+}

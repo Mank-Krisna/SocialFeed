@@ -10,24 +10,29 @@ use Livewire\Component;
 class Feed extends Component
 {
     public string $filter = 'all';
-    public int $perPage = 10;
+    public int $perPage;
+
+    public function mount(): void
+    {
+        $this->perPage = (int) config('feed.per_page', 10);
+    }
 
     #[On('post-created')]
     #[On('post-deleted')]
     public function refreshFeed(): void
     {
-        $this->reset('perPage');
+        $this->perPage = (int) config('feed.per_page', 10);
     }
 
     public function loadMore(): void
     {
-        $this->perPage += 10;
+        $this->perPage += (int) config('feed.per_page', 10);
     }
 
     public function setFilter(string $filter): void
     {
         $this->filter = $filter;
-        $this->perPage = 10;
+        $this->perPage = (int) config('feed.per_page', 10);
     }
 
     public function render()

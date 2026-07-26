@@ -17,7 +17,12 @@ class UserProfileController extends Controller
             })->firstOrFail();
         }
 
-        $posts = $userModel->posts()->withFeedRelations(auth()->id())->latest()->get();
+        $perPage = (int) config('feed.per_page', 10);
+        $posts = $userModel->posts()
+            ->withFeedRelations(auth()->id())
+            ->latest()
+            ->take($perPage + 1)
+            ->get();
 
         return view('profile.show', [
             'user' => $userModel,
