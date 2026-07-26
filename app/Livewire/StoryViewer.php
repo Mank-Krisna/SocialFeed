@@ -11,13 +11,14 @@ class StoryViewer extends Component
     public $userId = null;
     public $currentStoryIndex = 0;
     public $stories = [];
+    public $currentStory = null;
     public $isOpen = false;
 
     protected $listeners = ['open-story-viewer' => 'loadStories'];
 
     public function loadStories($userId)
     {
-        $this->reset('currentStoryIndex', 'stories');
+        $this->reset('currentStoryIndex', 'stories', 'currentStory');
         $this->userId = $userId;
         $this->isOpen = true;
 
@@ -28,8 +29,15 @@ class StoryViewer extends Component
             ->get()
             ->toArray();
 
-        if (!empty($this->stories)) {
-            $this->markAsViewed($this->stories[0]['id']);
+        $this->updateCurrentStory();
+    }
+
+    public function updateCurrentStory(): void
+    {
+        $this->currentStory = $this->stories[$this->currentStoryIndex] ?? null;
+
+        if ($this->currentStory) {
+            $this->markAsViewed($this->currentStory['id']);
         }
     }
 
@@ -47,7 +55,7 @@ class StoryViewer extends Component
     {
         if ($this->currentStoryIndex < count($this->stories) - 1) {
             $this->currentStoryIndex++;
-            $this->markAsViewed($this->stories[$this->currentStoryIndex]['id']);
+            $this->updateCurrentStory();
             $this->dispatch('story-advanced');
         } else {
             $this->closeViewer();
@@ -58,7 +66,7 @@ class StoryViewer extends Component
     {
         if ($this->currentStoryIndex > 0) {
             $this->currentStoryIndex--;
-            $this->markAsViewed($this->stories[$this->currentStoryIndex]['id']);
+            $this->updateCurrentStory();
             $this->dispatch('story-advanced');
         }
     }
@@ -66,13 +74,8 @@ class StoryViewer extends Component
     public function closeViewer()
     {
         $this->isOpen = false;
-        $this->reset('userId', 'stories', 'currentStoryIndex');
+        $this->reset('userId', 'stories', 'currentStoryIndex', 'currentStory');
         $this->dispatch('story-viewer-closed');
-    }
-
-    public function getCurrentStoryProperty()
-    {
-        return $this->stories[$this->currentStoryIndex] ?? null;
     }
 
     public function render()

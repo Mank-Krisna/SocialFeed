@@ -19,16 +19,14 @@
         <!-- Header -->
         <div class="absolute top-12 left-0 right-0 flex items-center justify-between px-4 z-10 text-white">
             <div class="flex items-center gap-3" x-show="$wire.currentStory">
-                <template x-if="$wire.currentStory">
-                    <div class="flex items-center gap-2">
-                        <img :src="$wire.currentStory.user?.avatar_url || 'https://ui-avatars.com/api/?name=U'" 
-                             class="w-8 h-8 rounded-full border border-white/50 object-cover">
-                        <div>
-                            <p class="text-sm font-semibold" x-text="$wire.currentStory.user?.username || ''"></p>
-                            <p class="text-xs opacity-70" x-text="timeAgo($wire.currentStory.created_at)"></p>
-                        </div>
+                <div class="flex items-center gap-2" x-show="$wire.currentStory">
+                    <img :src="$wire.currentStory.user?.avatar_url || 'https://ui-avatars.com/api/?name=U'" 
+                         class="w-8 h-8 rounded-full border border-white/50 object-cover">
+                    <div>
+                        <p class="text-sm font-semibold" x-text="$wire.currentStory.user?.username || ''"></p>
+                        <p class="text-xs opacity-70" x-text="timeAgo($wire.currentStory.created_at)"></p>
                     </div>
-                </template>
+                </div>
             </div>
             <button @click="$wire.closeViewer()" class="text-white text-3xl leading-none p-2 hover:opacity-70">&times;</button>
         </div>
@@ -37,20 +35,18 @@
         <div class="flex-1 flex items-center justify-center relative overflow-hidden"
              @touchstart="handleTouchStart($event)" @touchend="handleTouchEnd($event)">
             
-            <template x-if="$wire.currentStory">
-                <div class="w-full h-full flex items-center justify-center">
-                    <template x-if="isVideo($wire.currentStory.media_path)">
-                        <video :src="'/storage/' + $wire.currentStory.media_path" 
-                               class="max-w-full max-h-full object-contain"
-                               autoplay muted playsinline
-                               @ended="$wire.nextStory()"></video>
-                    </template>
-                    <template x-if="!isVideo($wire.currentStory.media_path)">
-                        <img :src="'/storage/' + $wire.currentStory.media_path" 
-                             class="max-w-full max-h-full object-contain">
-                    </template>
+            <div x-show="$wire.currentStory" class="w-full h-full flex items-center justify-center">
+                <div x-show="isVideo($wire.currentStory?.media_path)">
+                    <video :src="'/storage/' + $wire.currentStory?.media_path" 
+                           class="max-w-full max-h-full object-contain"
+                           autoplay muted playsinline
+                           @ended="$wire.nextStory()"></video>
                 </div>
-            </template>
+                <div x-show="!isVideo($wire.currentStory?.media_path)">
+                    <img :src="'/storage/' + $wire.currentStory?.media_path" 
+                         class="max-w-full max-h-full object-contain">
+                </div>
+            </div>
         </div>
 
         <!-- Caption -->
