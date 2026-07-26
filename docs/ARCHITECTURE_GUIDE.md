@@ -373,23 +373,17 @@ User upload → Livewire WithFileUploads
 
 ## 8. Tests Directory (`tests/`)
 
-### Feature Tests (18 files)
+### Feature Tests (10 files)
 
 | Test | Yang Di-test |
 |------|-------------|
-| `Auth/AuthenticationTest` | Login, logout |
-| `Auth/RegistrationTest` | Register |
-| `Auth/PasswordResetTest` | Reset password |
-| `Auth/PasswordUpdateTest` | Update password |
-| `Auth/EmailVerificationTest` | Verifikasi email |
-| `Auth/PasswordConfirmationTest` | Konfirmasi password |
+| `BroadcastingTest` | Event broadcasting |
 | `PaginationTest` | Feed pagination config |
-| `PostPolicyTest` | Post authorization |
 | `PostMediaUploadTest` | File upload |
+| `PostPolicyTest` | Post authorization |
 | `ProfileTest` | Profile update |
 | `ReportTest` | Report system |
 | `SearchTest` | Search functionality |
-| `BroadcastingTest` | Event broadcasting |
 | `SocialFeedCoreTest` | Core features |
 | `SocialFeedV2Test` | V2 features |
 | `SocialFeedV3Test` | V3 features |
