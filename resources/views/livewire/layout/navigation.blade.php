@@ -41,12 +41,7 @@ new class extends Component
                         <span class="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center px-1 text-[10px] font-bold text-white bg-red-500 rounded-full">{{ auth()->user()->unreadMessagesCount() > 99 ? '99+' : auth()->user()->unreadMessagesCount() }}</span>
                     @endif
                 </a>
-                <a href="{{ route('notifications') }}" wire:navigate class="hidden md:flex items-center justify-center w-10 h-10 rounded-xl transition relative {{ request()->routeIs('notifications*') ? 'text-[var(--accent)] bg-[var(--accent-soft)]' : 'text-[var(--text-variant)] hover:bg-[var(--surface-hover)]' }}" title="Notifikasi">
-                    <span class="material-symbols-outlined {{ request()->routeIs('notifications*') ? 'filled' : '' }}" aria-hidden="true">notifications</span>
-                    @if (auth()->user()->unreadNotificationsCount() > 0)
-                        <span class="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center px-1 text-[10px] font-bold text-white bg-red-500 rounded-full">{{ auth()->user()->unreadNotificationsCount() > 99 ? '99+' : auth()->user()->unreadNotificationsCount() }}</span>
-                    @endif
-                </a>
+                <livewire:notifications-dropdown />
 
                 {{-- Mobile: settings icon --}}
                 <a href="{{ route('profile.edit') }}" wire:navigate class="md:hidden p-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-hover)] transition" title="Pengaturan">
