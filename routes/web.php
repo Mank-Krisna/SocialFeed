@@ -66,7 +66,7 @@ Route::view('/friends', 'friends')
 
 // Admin Dashboard
 Route::view('/admin', 'admin')
-    ->middleware(['auth'])
+    ->middleware(['auth', 'can:admin'])
     ->name('admin');
 
 // Messages

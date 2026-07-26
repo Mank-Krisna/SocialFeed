@@ -52,8 +52,8 @@
                         >
                             <div class="relative shrink-0">
                                 <img src="{{ $other->avatar_url }}" class="w-10 h-10 rounded-full object-cover" />
-                                @if ($conv->unread > 0)
-                                    <span class="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">{{ $conv->unread > 9 ? '9+' : $conv->unread }}</span>
+                                @if ($conv->unread_count > 0)
+                                    <span class="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">{{ $conv->unread_count > 9 ? '9+' : $conv->unread_count }}</span>
                                 @endif
                             </div>
                             <div class="min-w-0 flex-1">
@@ -63,7 +63,7 @@
                                         <span class="text-[10px] text-[#727785] shrink-0">{{ $conv->messages->first()->created_at->diffForHumans(['short' => true]) }}</span>
                                     @endif
                                 </div>
-                                <p class="text-[11px] text-[#727785] dark:text-[#9ca3af] truncate {{ $conv->unread > 0 ? 'font-semibold' : '' }}">
+                                <p class="text-[11px] text-[#727785] dark:text-[#9ca3af] truncate {{ $conv->unread_count > 0 ? 'font-semibold' : '' }}">
                                     {{ $conv->messages->first()?->body ?? 'Belum ada pesan' }}
                                 </p>
                             </div>

@@ -1,0 +1,52 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: socialfeed-app
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www
+      - ./storage:/var/www/storage
+      - ./bootstrap/cache:/var/www/bootstrap/cache
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - meilisearch
+    networks:
+      - socialfeed
+
+  redis:
+    image: redis:7-alpine
+    container_name: socialfeed-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - socialfeed
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.6
+    container_name: socialfeed-meilisearch
+    restart: unless-stopped
+    ports:
+      - "7700:7700"
+    volumes:
+      - meilisearch-data:/meili_data
+    environment:
+      - MEILI_MASTER_KEY=${MEILISEARCH_KEY:-your-meilisearch-master-key}
+    networks:
+      - socialfeed
+
+volumes:
+  redis-data:
+  meilisearch-data:
+
+networks:
+  socialfeed:
+    driver: bridge

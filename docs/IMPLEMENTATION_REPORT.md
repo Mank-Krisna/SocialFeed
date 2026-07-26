@@ -142,9 +142,45 @@
 
 ---
 
+## Production Readiness (2026-07-26)
+
+### Security
+- [x] `.env.production.example` with all production keys
+- [x] Admin routes protected with `auth` + `can:admin` policy
+- [x] File uploads: mime type + size validation on all controllers
+- [x] CSRF protection active on all forms
+- [x] XSS: `{!! !!}` usage safe (body_html escapes via `e()`)
+- [x] AdminPolicy created for `can:admin` middleware
+
+### Performance
+- [x] N+1 queries eliminated:
+  - Feed: `withFeedRelations()` eager loads user, media, group, parent, poll + counts
+  - Bookmarks: added `withCount(['likes', 'comments', 'reposts'])` + `withExists`
+  - Messenger: `withCount` for unread_count instead of per-conversation query
+- [x] `php artisan optimize` — config, routes, views cached
+- [x] Redis queue + cache support
+
+### Testing
+- **Total tests:** 88/88 passing
+- **E2E tests:** 4 Playwright
+- **Coverage:** Feed, Groups, Search, Friends, Posts, Reports, Policies, Broadcasting, Search
+
+### Deployment
+- [x] `Dockerfile` — PHP 8.3-FPM + Nginx + Node
+- [x] `docker-compose.yml` — app + Redis + Meilisearch
+- [x] `.github/workflows/deploy.yml` — CI/CD (test + deploy)
+- [x] `deploy.sh` — VPS deployment script
+- [x] `docker/nginx.conf` + `docker/supervisord.conf`
+
+### Documentation
+- [x] `README.md` — install, deploy, config guide
+- [x] `CHANGELOG.md` — v1.0.0 release notes
+- [x] `docs/IMPLEMENTATION_REPORT.md` — full feature/route/test summary
+
+---
+
 ## Known Issues / TODO
 - [ ] Real-time presence channel (online status)
 - [ ] Video transcoding
 - [ ] Push notifications (Web Push API)
 - [ ] Admin report filter by status/date
-- [ ] Rate limiting (throttle middleware)

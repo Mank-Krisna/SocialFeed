@@ -1,4 +1,5 @@
 <div class="space-y-3">
+@auth
     <!-- User Quick Card -->
         <a href="{{ route('profile.show', auth()->user()->username ?? auth()->id()) }}" wire:navigate class="card-elevation p-2.5 flex items-center gap-2 hover:bg-[var(--bg-page)] dark:hover:bg-[#1c1e24] transition block">
         <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" width="36" height="36" class="w-9 h-9 rounded-full object-cover shrink-0 border border-[var(--card-border)]" />
@@ -45,7 +46,7 @@
         <a href="{{ route('notifications') }}" wire:navigate class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-sm font-semibold transition {{ request()->routeIs('notifications') ? 'bg-[var(--accent)]/10 text-[var(--accent)]' : 'text-[var(--text-variant)] hover:bg-[var(--surface-hover)]' }}">
             <span aria-hidden="true" class="material-symbols-outlined text-[20px] {{ request()->routeIs('notifications') ? 'filled' : '' }}">notifications</span>
             <span>Notifikasi</span>
-            @if (auth()->user()->unreadNotificationsCount() > 0)
+            @if (auth()->check() && auth()->user()->unreadNotificationsCount() > 0)
                 <span class="ms-auto px-2 py-0.5 rounded-full text-[10px] font-bold bg-[var(--accent)] text-white">
                     {{ auth()->user()->unreadNotificationsCount() }}
                 </span>
@@ -54,14 +55,13 @@
     </div>
 
     <!-- Mini Footer -->
-    @auth
-        @if (auth()->user()->isAdmin())
-            <a href="{{ route('admin') }}" wire:navigate class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-sm font-semibold transition {{ request()->routeIs('admin') ? 'bg-[var(--accent)]/10 text-[var(--accent)]' : 'text-[var(--text-variant)] hover:bg-[var(--surface-hover)]' }}">
-                <span aria-hidden="true" class="material-symbols-outlined text-[20px] {{ request()->routeIs('admin') ? 'filled' : '' }}">admin_panel_settings</span>
-                <span>Admin</span>
-            </a>
-        @endif
-    @endauth
+    @if (auth()->user()->isAdmin())
+        <a href="{{ route('admin') }}" wire:navigate class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-sm font-semibold transition {{ request()->routeIs('admin') ? 'bg-[var(--accent)]/10 text-[var(--accent)]' : 'text-[var(--text-variant)] hover:bg-[var(--surface-hover)]' }}">
+            <span aria-hidden="true" class="material-symbols-outlined text-[20px] {{ request()->routeIs('admin') ? 'filled' : '' }}">admin_panel_settings</span>
+            <span>Admin</span>
+        </a>
+    @endif
+@endauth
     <div class="px-3 text-xs text-[var(--text-secondary)] space-y-1">
         <p>&copy; {{ date('Y') }} SocialFeed v3.0</p>
         <p>Built with Laravel 11 &amp; Livewire 3</p>

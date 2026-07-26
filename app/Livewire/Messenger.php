@@ -27,11 +27,14 @@ class Messenger extends Component
 
         $all = $user->conversations()
             ->with(['messages' => fn ($q) => $q->latest()->take(1)])
+            ->withCount(['messages as unread_count' => function ($q) use ($user) {
+                $q->where('user_id', '!=', $user->id)
+                  ->where(function ($q2) {
+                      $q2->whereNull('conversation_user.last_read_at')
+                         ->orWhereColumn('messages.created_at', '>', 'conversation_user.last_read_at');
+                  });
+            }])
             ->get();
-
-        $all->each(function ($c) use ($user) {
-            $c->unread = $c->unreadCountFor($user);
-        });
 
         return $all->sortByDesc(function ($c) {
             $last = $c->messages->first();

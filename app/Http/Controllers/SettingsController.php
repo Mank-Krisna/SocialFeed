@@ -64,6 +64,9 @@ class SettingsController extends Controller
         }
 
         Auth::user()->delete();
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect('/');
     }
 }

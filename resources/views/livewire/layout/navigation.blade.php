@@ -32,6 +32,7 @@ new class extends Component
 
             <!-- Middle: Quick Links (Desktop) -->
             <div class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                @auth
                 <a href="{{ route('feed') }}" wire:navigate class="px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition {{ request()->routeIs('feed') ? 'text-[var(--accent)] bg-[var(--accent-soft)]' : 'text-[var(--text-variant)] hover:bg-[var(--surface-hover)]' }}">
                     <span class="material-symbols-outlined {{ request()->routeIs('feed') ? 'filled' : '' }}" aria-hidden="true">home</span>
                     <span>Feed</span>
@@ -72,9 +73,11 @@ new class extends Component
                         <span>Admin</span>
                     </a>
                 @endif
+                @endauth
             </div>
 
             <!-- Right: User Dropdown -->
+            @auth
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
@@ -121,8 +124,10 @@ new class extends Component
                     </x-slot>
                 </x-dropdown>
             </div>
+            @endauth
 
             <!-- Hamburger / Options (Mobile) -->
+            @auth
             <div class="-me-1 flex items-center gap-1 sm:hidden">
                 <a href="{{ route('profile.edit') }}" wire:navigate class="p-2 rounded-lg text-[#727785] dark:text-[#9ca3af] hover:text-[#1a1c1f] dark:hover:text-[#e2e2e6] hover:bg-[#f3f3f7] dark:hover:bg-[#25282e] transition" title="Pengaturan">
                     <span class="material-symbols-outlined text-xl">settings</span>
@@ -237,4 +242,5 @@ new class extends Component
         <span class="text-[10px] font-bold">Profil</span>
     </a>
 </nav>
+@endauth
 </div>

@@ -69,11 +69,13 @@
                 <div class="grid grid-cols-12 gap-4">
                     
                     <!-- Left Sidebar (3 cols, sticky, self-scrolling) -->
+                    @auth
                     <aside class="col-span-3 hidden lg:block">
                         <div class="sticky top-16 max-h-[calc(100vh-4rem)] overflow-y-auto">
                             <x-left-sidebar />
                         </div>
                     </aside>
+                    @endauth
 
                     <!-- Main Feed Container (6 cols, scrolls naturally) -->
                     <section class="col-span-12 lg:col-span-6 space-y-3">
@@ -105,11 +107,13 @@
                     </section>
 
                     <!-- Right Sidebar (3 cols, sticky, self-scrolling) -->
+                    @auth
                     <aside class="col-span-3 hidden lg:block">
                         <div class="sticky top-16 max-h-[calc(100vh-4rem)] overflow-y-auto">
                             <x-right-sidebar />
                         </div>
                     </aside>
+                    @endauth
 
                 </div>
             </main>
