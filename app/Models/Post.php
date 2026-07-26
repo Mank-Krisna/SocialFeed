@@ -47,9 +47,28 @@ class Post extends Model
         return $this->hasMany(PostMedia::class);
     }
 
-    public function likes(): HasMany
+    public function reactions(): HasMany
     {
-        return $this->hasMany(Like::class);
+        return $this->hasMany(Reaction::class);
+    }
+
+    public function getReactionCountsAttribute()
+    {
+        return $this->reactions()
+            ->selectRaw('type, COUNT(*) as count')
+            ->groupBy('type')
+            ->pluck('count', 'type');
+    }
+
+    public function getUserReactionAttribute()
+    {
+        if (!auth()->check()) return null;
+        
+        $reaction = $this->reactions()
+            ->where('user_id', auth()->id())
+            ->first();
+        
+        return $reaction?->type;
     }
 
     public function comments(): HasMany
@@ -67,7 +86,7 @@ class Post extends Model
         if (!$user) {
             return false;
         }
-        return $this->likes()->where('user_id', $user->id)->exists();
+        return $this->reactions()->where('user_id', $user->id)->exists();
     }
 
     public function parent(): BelongsTo
@@ -119,11 +138,10 @@ class Post extends Model
     public function scopeWithFeedRelations($query, ?int $userId = null): void
     {
         $query->with(['user', 'media', 'group', 'parent.user', 'poll.options'])
-              ->withCount(['likes', 'comments', 'reposts']);
+              ->withCount(['comments', 'reposts']);
 
         if ($userId) {
             $query->withExists([
-                'likes as is_liked_by_user' => fn ($q) => $q->where('likes.user_id', $userId),
                 'savedByUsers as is_saved_by_user' => fn ($q) => $q->where('saved_posts.user_id', $userId),
             ]);
         }

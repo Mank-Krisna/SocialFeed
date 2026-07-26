@@ -116,11 +116,11 @@ class SocialFeedV2Test extends TestCase
 
         Livewire::actingAs($liker)
             ->test(PostItem::class, ['post' => $post])
-            ->call('toggleLike');
+            ->call('react', 'like');
 
         $notif = Notification::where('user_id', $author->id)
             ->where('sender_id', $liker->id)
-            ->where('type', 'like')
+            ->where('type', 'reaction')
             ->first();
 
         $this->assertNotNull($notif);

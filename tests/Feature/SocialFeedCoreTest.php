@@ -57,23 +57,20 @@ class SocialFeedCoreTest extends TestCase
 
         Livewire::actingAs($user)
             ->test(PostItem::class, ['post' => $post])
-            ->call('toggleLike')
-            ->assertSet('isLiked', true)
-            ->assertSet('likesCount', 1);
+            ->call('react', 'like');
 
-        $this->assertDatabaseHas('likes', [
+        $this->assertDatabaseHas('reactions', [
             'user_id' => $user->id,
             'post_id' => $post->id,
+            'type' => 'like',
         ]);
 
         // Toggle again to unlike
         Livewire::actingAs($user)
-            ->test(PostItem::class, ['post' => $post])
-            ->call('toggleLike')
-            ->assertSet('isLiked', false)
-            ->assertSet('likesCount', 0);
+            ->test(PostItem::class, ['post' => $post->fresh()])
+            ->call('react', 'like');
 
-        $this->assertDatabaseMissing('likes', [
+        $this->assertDatabaseMissing('reactions', [
             'user_id' => $user->id,
             'post_id' => $post->id,
         ]);

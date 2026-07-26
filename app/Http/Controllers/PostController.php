@@ -13,7 +13,7 @@ class PostController extends Controller
         }
 
         $post->load(['user', 'media']);
-        $post->loadCount(['likes', 'comments']);
+        $post->loadCount(['comments']);
 
         return view('posts.show', [
             'post' => $post,

@@ -44,7 +44,9 @@ class Feed extends Component
         $user = Auth::user();
         $myGroupIds = $user ? $user->groups()->pluck('groups.id')->toArray() : [];
 
-        $query = Post::withFeedRelations($user?->id)->latest();
+        $query = Post::withFeedRelations($user?->id)
+            ->with(['reactions' => fn($q) => $q->where('user_id', $user?->id)])
+            ->latest();
 
         $query->where(function ($q) use ($myGroupIds) {
             $q->whereNull('group_id')
