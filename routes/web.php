@@ -70,7 +70,7 @@ Route::view('/admin', 'admin')
     ->name('admin');
 
 // Messages
-Route::get('/messages', [ConversationController::class, 'index'])
+Route::view('/messages', 'messages')
     ->middleware(['auth'])
     ->name('messages');
 Route::get('/messages/{conversation}', [ConversationController::class, 'show'])
