@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Notifications - SocialFeed</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#f9f9fd",
+                    "error": "#ba1a1a",
+                    "tertiary-container": "#6a7680",
+                    "tertiary-fixed": "#d8e4f0",
+                    "secondary-fixed": "#e1e2e7",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed": "#191c1f",
+                    "surface-container-low": "#f3f3f7",
+                    "on-primary-fixed": "#001a41",
+                    "on-tertiary-container": "#fcfcff",
+                    "on-primary-container": "#fefcff",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#45474b",
+                    "surface-dim": "#d9dade",
+                    "secondary-fixed-dim": "#c5c6cb",
+                    "tertiary-fixed-dim": "#bcc8d3",
+                    "surface-bright": "#f9f9fd",
+                    "outline-variant": "#c1c6d6",
+                    "on-primary-fixed-variant": "#004493",
+                    "surface": "#f9f9fd",
+                    "surface-container-highest": "#e2e2e6",
+                    "inverse-primary": "#adc6ff",
+                    "primary-fixed": "#d8e2ff",
+                    "primary-container": "#0070eb",
+                    "on-surface-variant": "#414754",
+                    "tertiary": "#525d67",
+                    "on-secondary-container": "#626468",
+                    "surface-container": "#ededf1",
+                    "surface-variant": "#e2e2e6",
+                    "surface-tint": "#005bc0",
+                    "on-tertiary-fixed-variant": "#3d4852",
+                    "on-background": "#1a1c1f",
+                    "surface-container-high": "#e8e8ec",
+                    "inverse-on-surface": "#f0f0f4",
+                    "on-primary": "#ffffff",
+                    "primary": "#0058bc",
+                    "secondary-container": "#e1e2e7",
+                    "on-tertiary": "#ffffff",
+                    "outline": "#727785",
+                    "on-tertiary-fixed": "#111d25",
+                    "inverse-surface": "#2f3034",
+                    "on-error": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "primary-fixed-dim": "#adc6ff",
+                    "on-surface": "#1a1c1f",
+                    "secondary": "#5c5e62"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "space-sm": "8px",
+                    "space-lg": "24px",
+                    "space-md": "16px",
+                    "gutter": "16px",
+                    "container-max": "1200px",
+                    "unit": "4px",
+                    "space-xs": "4px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["20px", {"lineHeight": "26px", "fontWeight": "600"}],
+                    "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["17px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-md": ["13px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "body-md": ["15px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #f9f9fd;
+            font-family: 'Inter', sans-serif;
+            color: #1a1c1f;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .unread-indicator {
+            width: 8px;
+            height: 8px;
+            background-color: #0058bc;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface border-b border-surface-variant shadow-sm h-16">
+<div class="flex justify-between items-center px-space-lg h-16 max-w-container-max mx-auto">
+<div class="flex items-center gap-space-md">
+<span class="font-headline-md text-headline-md font-bold text-primary">SocialFeed</span>
+<div class="hidden md:flex relative ml-space-lg">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 w-64 focus:ring-2 focus:ring-primary text-body-md" placeholder="Search SocialFeed" type="text"/>
+</div>
+</div>
+<nav class="hidden md:flex items-center gap-space-lg">
+<a class="text-on-surface-variant hover:bg-surface-container-low transition-colors px-4 py-2 rounded-lg font-body-md text-body-md" href="#">Home</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low transition-colors px-4 py-2 rounded-lg font-body-md text-body-md" href="#">Friends</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low transition-colors px-4 py-2 rounded-lg font-body-md text-body-md" href="#">Groups</a>
+</nav>
+<div class="flex items-center gap-space-md">
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low text-primary hover:bg-surface-container-highest transition-all active:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">notifications</span>
+</button>
+<img class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="A professional headshot of a young adult with a friendly smile, clean-cut style, captured in soft natural lighting against a minimalist architectural background. The image has a high-quality, modern social media profile aesthetic with subtle depth of field and a cool, bright color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQXxwU76woNAZxi2r8a9OZC52fxY8PM4ZFikXT2Sj3neDFqL3KB3Zaani312UscOMFwnkHNTn2c9EHS2lIV3Zc-O5XWTM2C6M6Vm5dKFPGBb7PgyPQODiF1ufaF05IyfTg-U3fxFaQbiCsS5p_REkAFCv2OoHXOCJIy0UFx0CP0HpaTdd__BWJrN2Px1YSu3CCyQkQV5gtp-vjNaT-btzUxh5TpBdueYXRZFLVbi9jrAwq_AtJqiYJ"/>
+</div>
+</div>
+</header>
+<main class="pt-16 max-w-container-max mx-auto flex gap-space-lg">
+<!-- Left Sidebar (SideNavBar) -->
+<aside class="hidden lg:flex flex-col gap-space-sm p-space-md w-64 fixed left-[calc(50%-600px)] top-16 h-[calc(100vh-64px)] overflow-y-auto">
+<div class="flex items-center gap-space-md p-space-sm mb-space-sm">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="A stylish profile avatar of a man named John Doe, wearing a casual navy blue sweater, looking at the camera with confidence. The background is a blurred office space with soft daylight. High-end professional photography style, sharp focus on the subject, balanced exposure." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADB5qEVQD-tzbzEccswjMuVDZmiXgcZSzDXLKJZnenJQC7iKXVSA1zzVoy_qIIPZYouJqhnVYnYhcMkIsl8tveNnvvgAMEFhvEs9QC3qoCiaGoJi_fDj2JoXOs6C7JNLLQYCHkPfpf9oNz-AtJ2a_ixLQ_D5GHUfyZ7tmtaYgU9l1YfWmpyGfxWicqFs8YZhEpniNccleigs4IMsVxaqpqh4wimJ6MVTF0ScYqJ0kk7k2-Yj2bdZYz"/>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface">John Doe</h3>
+<p class="text-[11px] text-on-surface-variant uppercase tracking-wider">View Profile</p>
+</div>
+</div>
+<nav class="space-y-1">
+<a class="flex items-center gap-space-md p-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined">rss_feed</span>
+<span class="font-label-md text-label-md">Feed</span>
+</a>
+<a class="flex items-center gap-space-md p-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md text-label-md">Friends</span>
+</a>
+<a class="flex items-center gap-space-md p-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined">diversity_3</span>
+<span class="font-label-md text-label-md">Groups</span>
+</a>
+<a class="flex items-center gap-space-md p-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined">bookmark</span>
+<span class="font-label-md text-label-md">Saved</span>
+</a>
+<a class="flex items-center gap-space-md p-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined">storefront</span>
+<span class="font-label-md text-label-md">Marketplace</span>
+</a>
+</nav>
+</aside>
+<!-- Center Column (Notifications Content) -->
+<section class="flex-1 max-w-[680px] mx-auto lg:ml-64 lg:mr-80 px-4 py-space-lg min-h-screen">
+<div class="flex items-center justify-between mb-6">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Notifications</h1>
+<div class="flex gap-2">
+<button class="px-3 py-1 text-label-md font-semibold text-primary hover:bg-primary-fixed-dim transition-colors rounded-full">All</button>
+<button class="px-3 py-1 text-label-md font-semibold text-on-surface-variant hover:bg-surface-container-highest transition-colors rounded-full">Unread</button>
+</div>
+</div>
+<!-- Notification List -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden border border-surface-variant">
+<!-- Notification Item: Unread -->
+<div class="flex items-start gap-space-md p-space-md bg-primary-fixed/20 hover:bg-primary-fixed/30 transition-colors cursor-pointer border-b border-surface-variant relative group">
+<div class="relative">
+<img class="w-14 h-14 rounded-full object-cover" data-alt="Close-up portrait of a woman with vibrant energy, smiling warmly. She has dark curly hair and is wearing a bright yellow top. The lighting is sunny and optimistic, set in a lush green outdoor park environment. Modern clean photography style with soft focus background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsLDawzZyTfD2xasfR3bYovUmeM4tdXh_PqdLTTpMO11NLYpijwJlBK5vSmfj1inTgVLHXbiOWxi2wUkUfznMYO2CwPuEnG4XlTQLm-OMcVzQ7KsqxUovlY5gpt4-Id0QIeFr-T1eyEGfDDqIUWVd1GMfqiOp7_uS_ocgGrj19sYN2yU6arcSQatPLUWLmln0AQoQy1IVbEvTbk10KUBhpwR8CuQCD_82KCIBFEgej5wNDKrfMr0gr"/>
+<div class="absolute -bottom-1 -right-1 bg-primary text-white w-6 h-6 rounded-full flex items-center justify-center border-2 border-white">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+</div>
+<div class="flex-1 pr-4">
+<p class="font-body-md text-body-md leading-tight text-on-surface">
+<span class="font-bold">Sarah Jenkins</span> liked your post: "Just finished the new design system!"
+                        </p>
+<span class="text-label-sm text-primary font-semibold mt-1 block">2 minutes ago</span>
+</div>
+<div class="flex flex-col items-end gap-2">
+<div class="unread-indicator"></div>
+<button class="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-surface-container-highest rounded-full">
+<span class="material-symbols-outlined text-on-surface-variant">more_horiz</span>
+</button>
+</div>
+</div>
+<!-- Notification Item: Unread -->
+<div class="flex items-start gap-space-md p-space-md bg-primary-fixed/20 hover:bg-primary-fixed/30 transition-colors cursor-pointer border-b border-surface-variant relative group">
+<div class="relative">
+<img class="w-14 h-14 rounded-full object-cover" data-alt="Portrait of a creative professional man in his 30s with glasses and a thoughtful expression. He is in a modern workspace with neon accents and high-tech equipment. The aesthetic is tech-focused and sleek, using deep blues and crisp whites for a professional but innovative mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZkhjuDsZYbtrsuIVYAnOzBqLah3_UVQS_HYZ92uOA8VVlC-qOWMJO3J0yuS6XokstFziXW2R9vqLP8kBrc4WTgN4Y0iOejAB_KFkRCRZlYZ2vG_elOoqBTjwF6rpvUD53e7ir8sm2U06MzaObdt8so96yRA88zqERvbRJY7-xYGjs2O6XZL9CywVBUe4TuJHOoHz8eHRG2CMzGvbENTHRpIrhZM5qYxk53xLPWu1YkSzLIbJAai0_"/>
+<div class="absolute -bottom-1 -right-1 bg-tertiary-container text-white w-6 h-6 rounded-full flex items-center justify-center border-2 border-white">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">comment</span>
+</div>
+</div>
+<div class="flex-1 pr-4">
+<p class="font-body-md text-body-md leading-tight text-on-surface">
+<span class="font-bold">Marcus Thorne</span> commented on your photo: "This looks absolutely incredible, keep up the great work!"
+                        </p>
+<span class="text-label-sm text-primary font-semibold mt-1 block">15 minutes ago</span>
+</div>
+<div class="flex flex-col items-end gap-2">
+<div class="unread-indicator"></div>
+<button class="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-surface-container-highest rounded-full">
+<span class="material-symbols-outlined text-on-surface-variant">more_horiz</span>
+</button>
+</div>
+</div>
+<!-- Notification Item: Read -->
+<div class="flex items-start gap-space-md p-space-md bg-surface-container-lowest hover:bg-surface-container-low transition-colors cursor-pointer border-b border-surface-variant group">
+<div class="relative">
+<img class="w-14 h-14 rounded-full object-cover" data-alt="A portrait of a group of diverse professionals laughing together in a brightly lit modern office lobby. The scene captures authentic connection and community. The lighting is airy and clean, emphasizing a high-end corporate social network vibe with a palette of whites, blues, and greys." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFdtpCwVbx6-cBbz5n7fI1oVPwo8E10lQ4JL1zCKqeSznXSZLADxedLPb-5NCFC0UeoSkmHnJQS_pxmm68KvTE8Fjf2LOOkMvQayyr2ci0RxP-uFJA8vje0MRYin6TlVVTQ29PZKH6cwxPhS-z9ruHuh4Bf41QLStmEEmUAXnoGXjuL-gKOkTPqMMAz1pEMFz0Sp_SMRKtBQ89dGW5eJEaar3G-aH5AF9IqK6r0gjfr3YYF4Ps0DGw"/>
+<div class="absolute -bottom-1 -right-1 bg-secondary text-white w-6 h-6 rounded-full flex items-center justify-center border-2 border-white">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">group</span>
+</div>
+</div>
+<div class="flex-1 pr-4">
+<p class="font-body-md text-body-md leading-tight text-on-surface-variant">
+<span class="font-bold text-on-surface">UI Designers Community</span> invited you to join their group.
+                        </p>
+<span class="text-label-sm text-on-surface-variant mt-1 block">2 hours ago</span>
+</div>
+<button class="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-surface-container-highest rounded-full">
+<span class="material-symbols-outlined text-on-surface-variant">more_horiz</span>
+</button>
+</div>
+<!-- Notification Item: Read -->
+<div class="flex items-start gap-space-md p-space-md bg-surface-container-lowest hover:bg-surface-container-low transition-colors cursor-pointer border-b border-surface-variant group">
+<div class="relative">
+<img class="w-14 h-14 rounded-full object-cover" data-alt="Portrait of an elegant woman with a sophisticated look, wearing a minimalist white blazer. She is standing against a clean grey architectural wall. The photography is sharp and high-contrast, evoking a sense of leadership and professional success in a high-end social networking context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUljlAvvxvWkoAigN4v3DhMLo6S5duqpQF4KTPTYAoxG-DdBkhaJlMCZ7pyRapt0a1TcEkYc3n9U-QAlpWbBx7p7Bad-rmOivno1gG07rMTn6rXCDuy5NLxtCpO6o1YRjuVypBLRkOAluLfBav1zcZ4itMSXwfG7xZ3diCqRDnfLud0hPFpUJ5HRG7rCxES-Mya3mRlTJmjBn75jU_qKFpnEDYoczKzlbY2ByRZJIDaHG_Mg1ZptJ0"/>
+<div class="absolute -bottom-1 -right-1 bg-primary text-white w-6 h-6 rounded-full flex items-center justify-center border-2 border-white">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">person_add</span>
+</div>
+</div>
+<div class="flex-1 pr-4">
+<p class="font-body-md text-body-md leading-tight text-on-surface-variant">
+<span class="font-bold text-on-surface">Elena Rodriguez</span> accepted your friend request.
+                        </p>
+<span class="text-label-sm text-on-surface-variant mt-1 block">5 hours ago</span>
+</div>
+<button class="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-surface-container-highest rounded-full">
+<span class="material-symbols-outlined text-on-surface-variant">more_horiz</span>
+</button>
+</div>
+<!-- Notification Item: Read -->
+<div class="flex items-start gap-space-md p-space-md bg-surface-container-lowest hover:bg-surface-container-low transition-colors cursor-pointer border-b border-surface-variant group">
+<div class="relative">
+<img class="w-14 h-14 rounded-full object-cover" data-alt="Close-up of a smiling young man with light brown hair, wearing a denim shirt, looking directly into the camera. Background is a vibrant urban street during sunset, creating warm golden hour lighting and a friendly, accessible persona. Modern lifestyle photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeqmPWeK5upE6G3R9evoCQUCYpd6d6CuHu8i3KEJgX8Alua82h67okgMInW7WbQyvzZkIRyGALZX_r69DVz_Q3KCnPy-eSvPdJy1ssJ29HIE-AUqHH2-7HxV5t7uov5mIzk2ezP31e10c0-4ReFjWqO2B64ud_H3ezXFT-TJj7p3pdFCm4yy_ZrcrkyUlBQ0ZIfkzUjdrwI9UM0b45fIf2f59UB4I4UKM8kgKYsWX_K8zSyujGtt3Q"/>
+<div class="absolute -bottom-1 -right-1 bg-tertiary text-white w-6 h-6 rounded-full flex items-center justify-center border-2 border-white">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">share</span>
+</div>
+</div>
+<div class="flex-1 pr-4">
+<p class="font-body-md text-body-md leading-tight text-on-surface-variant">
+<span class="font-bold text-on-surface">David Chen</span> shared your post to his story.
+                        </p>
+<span class="text-label-sm text-on-surface-variant mt-1 block">Yesterday</span>
+</div>
+<button class="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-surface-container-highest rounded-full">
+<span class="material-symbols-outlined text-on-surface-variant">more_horiz</span>
+</button>
+</div>
+</div>
+<!-- View More -->
+<button class="w-full mt-6 py-3 text-primary font-bold hover:bg-surface-container-high transition-colors rounded-xl border border-dashed border-primary/30">
+                Load older notifications
+            </button>
+</section>
+<!-- Right Sidebar (Community Sidebar) -->
+<aside class="hidden xl:flex flex-col gap-space-md p-space-lg w-80 fixed right-[calc(50%-600px)] top-16 h-[calc(100vh-64px)] overflow-y-auto">
+<div class="mb-2">
+<h3 class="font-headline-md text-headline-md font-bold text-primary">Community</h3>
+<p class="text-label-md text-on-surface-variant">Stay updated</p>
+</div>
+<div class="bg-surface-container rounded-xl p-space-md">
+<h4 class="font-label-md text-label-md text-on-surface mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">trending_up</span>
+                    Trending Groups
+                </h4>
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">brush</span>
+</div>
+<div>
+<p class="font-label-md text-label-md">Digital Artists</p>
+<p class="text-[11px] text-on-surface-variant">12.5k members</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">code</span>
+</div>
+<div>
+<p class="font-label-md text-label-md">Web Dev Hub</p>
+<p class="text-[11px] text-on-surface-variant">45k members</p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container rounded-xl p-space-md mt-4">
+<h4 class="font-label-md text-label-md text-on-surface mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">person_add</span>
+                    Suggested Friends
+                </h4>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="Portrait of a young woman with glasses and bright colorful hair, looking professional yet creative. High-key lighting, minimalist studio background. Clean, modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpBQiDG4RD6k53MzGnBM1J6b4JH73H3_NgqAs5zemg0rGTzj480F08PeQo5mX2Tctop0U7CQPyaPSB6xJQebbGLOA0Eop3iYdqxW0c5UPimdx6mJq_uu_xCWwMsTI0ieFiUQkZItWcQihc5hJVW4nUR4CbO6NVCaaPIHMx25TlUzAW6Mu2lzLdjUrlSQ5yWMgh-N9TSV3x4nxKsllbfgjDi9PtXs7c-vaYQBWnNbpJqmwLA7JfrxPd"/>
+<div>
+<p class="font-label-md text-label-md">Aria Smith</p>
+<p class="text-[11px] text-on-surface-variant">Mutual Friend</p>
+</div>
+</div>
+<button class="text-primary material-symbols-outlined">add_circle</button>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="Portrait of a mature man with graying hair, wearing a professional blazer, smiling confidently. Executive headshot style, high quality, soft studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDttIA1uok2q5zHRleZyI-Egbi48_uQ1AE6FOtEQJCOMfXdAXbILeWrEcJeSDhG3ggt3njGn_9QyL-RIcBBmICEl2vtiACzAOw9yLRyT82QpDMAy14gNILRxbn4pLTOrJNGGYob44t8iUn9Y1jyE5XdGUUd0-Etm_pgQ9nPsqnwQc6vqP3wMgO3RG2Cx3Tsmj9tIBT-lVfl2Bv2HweOc2R8DlOWpbPZn21_rI6jpNTCsUyX6Cbqw9FI"/>
+<div>
+<p class="font-label-md text-label-md">Robert King</p>
+<p class="text-[11px] text-on-surface-variant">Recommended</p>
+</div>
+</div>
+<button class="text-primary material-symbols-outlined">add_circle</button>
+</div>
+</div>
+</div>
+</aside>
+</main>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface border-t border-surface-variant flex justify-around items-center h-16 px-4 z-50">
+<a class="flex flex-col items-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px]">Home</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px]">Friends</span>
+</a>
+<a class="flex flex-col items-center text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<span class="text-[10px] font-bold">Alerts</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">menu</span>
+<span class="text-[10px]">Menu</span>
+</a>
+</nav>
+<script>
+        // Simple interaction for mark as read (visual only)
+        document.querySelectorAll('.bg-primary-fixed\\/20').forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.remove('bg-primary-fixed/20');
+                this.classList.add('bg-surface-container-lowest');
+                const indicator = this.querySelector('.unread-indicator');
+                if (indicator) indicator.style.display = 'none';
+                const timeText = this.querySelector('.text-primary');
+                if (timeText) {
+                    timeText.classList.remove('text-primary');
+                    timeText.classList.add('text-on-surface-variant');
+                }
+            });
+        });
+    </script>
+</body></html>

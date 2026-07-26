@@ -1,0 +1,23 @@
+[
+  {
+    "pageTitle": "",
+    "pageUrl": null,
+    "tabId": null,
+    "isCurrent": false,
+    "notes": ["invalid_url", "normalized_tabId"]
+  },
+  {
+    "pageTitle": "foto sampul anime landscape - Search",
+    "pageUrl": "https://www.bing.com/images/search",
+    "tabId": 115065325,
+    "isCurrent": true,
+    "notes": []
+  },
+  {
+    "pageTitle": "https://github.com/Mank-Krisna/SocialFeed/pull/1",
+    "pageUrl": "https://github.com/Mank-Krisna/SocialFeed/pull/1",
+    "tabId": 115065451,
+    "isCurrent": false,
+    "notes": []
+  }
+]

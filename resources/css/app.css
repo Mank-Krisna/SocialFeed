@@ -1,0 +1,172 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Material Symbols Outlined Icon styling */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.material-symbols-outlined.filled {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+:root {
+  --bg-page: #f9f9fd;
+  --text-primary: #1a1c1f;
+  --text-secondary: #727785;
+  --text-variant: #414754;
+  --card-bg: #ffffff;
+  --card-border: #e2e2e6;
+  --surface-hover: #f3f3f7;
+  --nav-bg: #ffffff;
+  --drawer-bg: #ffffff;
+  --mobile-bar: #ffffff;
+  --skeleton-base: #e2e2e6;
+  --skeleton-shine: #f0f2f5;
+  --accent: #0058bc;
+  --accent-hover: #004493;
+  --accent-container: #f0f4ff;
+  --ivory-warm: #fdf6ec;
+}
+
+.dark {
+  --bg-page: #0f1117;
+  --text-primary: #e2e2e6;
+  --text-secondary: #9ca3af;
+  --text-variant: #b0b4be;
+  --card-bg: #1a1c1f;
+  --card-border: #2d2f34;
+  --surface-hover: #25282e;
+  --nav-bg: #16181c;
+  --drawer-bg: #16181c;
+  --mobile-bar: #16181ce5;
+  --skeleton-base: #25282e;
+  --skeleton-shine: #2d2f34;
+  --accent: #0058bc;
+  --accent-hover: #004493;
+  --accent-container: #1a2332;
+  --ivory-warm: #22242b;
+}
+
+.dark .card-elevation {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.font-display {
+  font-family: 'Sora', system-ui, -apple-system, sans-serif;
+}
+
+/* Community pulse gradient bar */
+@keyframes pulse-gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.pulse-bar {
+  background: linear-gradient(90deg, #0058bc, #0070eb, #004493, #0058bc);
+  background-size: 300% 100%;
+  animation: pulse-gradient 6s ease-in-out infinite;
+}
+
+/* Pulse dot animation */
+@keyframes pulse-dot {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.3); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+.card-elevation {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+/* ---- Custom Animations ---- */
+
+/* Fade in + slide up for feed posts */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.35s ease-out both;
+}
+
+/* Stagger children: each child delays by index*0.08s */
+.stagger-enter > * {
+  animation: fade-in-up 0.35s ease-out both;
+}
+.stagger-enter > *:nth-child(1) { animation-delay: 0s; }
+.stagger-enter > *:nth-child(2) { animation-delay: 0.06s; }
+.stagger-enter > *:nth-child(3) { animation-delay: 0.12s; }
+.stagger-enter > *:nth-child(4) { animation-delay: 0.18s; }
+.stagger-enter > *:nth-child(5) { animation-delay: 0.24s; }
+.stagger-enter > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-enter > *:nth-child(7) { animation-delay: 0.36s; }
+.stagger-enter > *:nth-child(8) { animation-delay: 0.42s; }
+
+/* Scale bounce for like button */
+@keyframes scale-bounce {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.25); }
+  70% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+.animate-like-bounce {
+  animation: scale-bounce 0.35s ease-out;
+}
+
+/* Skeleton shimmer */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, var(--skeleton-base) 25%, var(--skeleton-shine) 50%, var(--skeleton-base) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

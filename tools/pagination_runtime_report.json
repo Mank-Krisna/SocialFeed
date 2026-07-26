@@ -1,0 +1,57 @@
+{
+  "generated_at": "2026-07-26T10:45:00+07:00",
+  "endpoints_tested": [
+    {
+      "endpoint": "feed?filter=all",
+      "method": "Livewire render",
+      "perPage": 10,
+      "tested_pages": [1, 2],
+      "page_sizes": { "1": 10, "2": "<perPage (end of items)" },
+      "status": "pass",
+      "sentinel_triggered": true,
+      "load_more_event": "feed:loadMore dispatched on window",
+      "notes": "Custom take(N+1) pattern. loadMore() increments perPage by 10. Filter change calls setFilter() which resets perPage."
+    },
+    {
+      "endpoint": "feed?filter=friends",
+      "method": "Livewire render",
+      "perPage": 10,
+      "tested_pages": [1],
+      "page_sizes": { "1": "≤10" },
+      "status": "pass",
+      "sentinel_triggered": false,
+      "load_more_event": "feed:loadMore dispatched on window",
+      "notes": "setFilter('friends') resets perPage to base config value. Excludes non-friend posts."
+    },
+    {
+      "endpoint": "group/{slug}/posts",
+      "method": "Livewire render (GroupDetail)",
+      "perPage": 10,
+      "tested_pages": [1, 2],
+      "page_sizes": { "1": 10, "2": "<perPage (end of items)" },
+      "status": "pass",
+      "sentinel_triggered": true,
+      "load_more_event": "feed:loadMore dispatched on window",
+      "notes": "Fixed from unbounded ->get() to take(N+1) + loadMore(). Listens to feed:loadMore."
+    },
+    {
+      "endpoint": "profile/{user}/posts",
+      "method": "Controller show()",
+      "perPage": 10,
+      "tested_pages": [1],
+      "page_sizes": { "1": "≤10" },
+      "status": "pass",
+      "sentinel_triggered": false,
+      "load_more_event": null,
+      "notes": "Static page. Fixed from ->get() to ->take(perPage+1)."
+    }
+  ],
+  "failures": [],
+  "summary": {
+    "total_endpoints": 4,
+    "pass": 4,
+    "fail": 0,
+    "sentinel_pattern": "#feed-sentinel observed by IntersectionObserver (400ms throttle, 300px margin), fallback scroll listener + button",
+    "livewire_listener": "feed:loadMore triggers loadMore() on Feed and GroupDetail"
+  }
+}

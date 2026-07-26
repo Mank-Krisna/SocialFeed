@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SocialFeed - Connect with the World</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9f9fd; /* background color from config */
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "background": "#f9f9fd",
+                      "error": "#ba1a1a",
+                      "tertiary-container": "#6a7680",
+                      "tertiary-fixed": "#d8e4f0",
+                      "secondary-fixed": "#e1e2e7",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "on-secondary-fixed": "#191c1f",
+                      "surface-container-low": "#f3f3f7",
+                      "on-primary-fixed": "#001a41",
+                      "on-tertiary-container": "#fcfcff",
+                      "on-primary-container": "#fefcff",
+                      "error-container": "#ffdad6",
+                      "on-secondary-fixed-variant": "#45474b",
+                      "surface-dim": "#d9dade",
+                      "secondary-fixed-dim": "#c5c6cb",
+                      "tertiary-fixed-dim": "#bcc8d3",
+                      "surface-bright": "#f9f9fd",
+                      "outline-variant": "#c1c6d6",
+                      "on-primary-fixed-variant": "#004493",
+                      "surface": "#f9f9fd",
+                      "surface-container-highest": "#e2e2e6",
+                      "inverse-primary": "#adc6ff",
+                      "primary-fixed": "#d8e2ff",
+                      "primary-container": "#0070eb",
+                      "on-surface-variant": "#414754",
+                      "tertiary": "#525d67",
+                      "on-secondary-container": "#626468",
+                      "surface-container": "#ededf1",
+                      "surface-variant": "#e2e2e6",
+                      "surface-tint": "#005bc0",
+                      "on-tertiary-fixed-variant": "#3d4852",
+                      "on-background": "#1a1c1f",
+                      "surface-container-high": "#e8e8ec",
+                      "inverse-on-surface": "#f0f0f4",
+                      "on-primary": "#ffffff",
+                      "primary": "#0058bc",
+                      "secondary-container": "#e1e2e7",
+                      "on-tertiary": "#ffffff",
+                      "outline": "#727785",
+                      "on-tertiary-fixed": "#111d25",
+                      "inverse-surface": "#2f3034",
+                      "on-error": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "primary-fixed-dim": "#adc6ff",
+                      "on-surface": "#1a1c1f",
+                      "secondary": "#5c5e62"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "space-sm": "8px",
+                      "space-lg": "24px",
+                      "space-md": "16px",
+                      "gutter": "16px",
+                      "container-max": "1200px",
+                      "unit": "4px",
+                      "space-xs": "4px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "label-md": ["Inter"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-md": ["20px", {"lineHeight": "26px", "fontWeight": "600"}],
+                      "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["17px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "label-md": ["13px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                      "body-md": ["15px", {"lineHeight": "20px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-surface">
+<main class="min-h-screen flex flex-col justify-center items-center pt-space-lg pb-space-lg px-gutter">
+<div class="max-w-container-max w-full grid grid-cols-1 lg:grid-cols-2 gap-space-lg items-center px-space-md lg:px-0">
+<!-- Left Side: Branding -->
+<section class="flex flex-col text-center lg:text-left space-y-space-sm mb-space-lg lg:mb-0">
+<h1 class="font-headline-lg text-[64px] leading-tight font-extrabold text-primary tracking-tight lg:-ml-1">
+                    SocialFeed
+                </h1>
+<p class="font-body-lg text-headline-md max-w-md mx-auto lg:mx-0 text-on-surface-variant leading-relaxed">
+                    Connect with friends and the world around you.
+                </p>
+<!-- Atmospheric Visual: Optional small illustration or subtle shader -->
+<div class="hidden lg:block pt-space-lg">
+<div class="w-full h-48 rounded-xl overflow-hidden relative border border-outline-variant/30">
+<div class="bg-cover bg-center w-full h-full opacity-80" data-alt="A clean, minimalist 3D isometric illustration of diverse people connected by subtle glowing blue lines. The scene is set in a bright, airy digital space with a soft light-mode color palette. The aesthetic is professional, modern, and focuses on global community and connectivity." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAKDWjZU_UIlg3WJ2_k9gUnUY_ugWY1Pff8zL99ClfEg4aS_cti0nbh0eflsFC3pYF7L_uKYkuBBLnsDnxbv5y_nEUyNYseXpbFamBsD29dmmMJAs9ClhTs_IYMmRCeRZQxibxgpqHZ25nNJjGI24nQe4pQEfCVfFhTCDYYKPEFR41w0HuP3_yCjUhIJxITF9KqbitMioKn_ak4SwEdB3VZJSpV-3cLJx9yyzn27lLYS2gDVvLRy9Ro')"></div>
+</div>
+</div>
+</section>
+<!-- Right Side: Login Card -->
+<section class="flex justify-center lg:justify-end">
+<div class="w-full max-w-[396px] p-space-md bg-surface-container-lowest border border-outline-variant shadow-sm rounded-xl">
+<form class="space-y-space-md" onsubmit="event.preventDefault();">
+<div>
+<input class="w-full p-space-md rounded-lg border-outline-variant bg-background focus:ring-2 focus:ring-primary focus:border-transparent text-body-lg transition-all" placeholder="Email or phone number" required="" type="text"/>
+</div>
+<div>
+<input class="w-full p-space-md rounded-lg border-outline-variant bg-background focus:ring-2 focus:ring-primary focus:border-transparent text-body-lg transition-all" placeholder="Password" required="" type="password"/>
+</div>
+<button class="w-full bg-primary text-on-primary py-3 rounded-lg font-headline-md hover:brightness-110 active:scale-[0.98] transition-all" type="submit">
+                            Log In
+                        </button>
+<div class="text-center">
+<a class="text-primary font-label-md hover:underline" href="#">Forgot password?</a>
+</div>
+<hr class="border-outline-variant"/>
+<div class="flex justify-center pt-space-sm">
+<button class="bg-[#42b72a] hover:bg-[#36a420] text-white px-space-lg py-3 rounded-lg font-headline-md font-bold active:scale-[0.98] transition-all" type="button">
+                                Create New Account
+                            </button>
+</div>
+</form>
+<p class="mt-space-lg text-center font-label-sm text-on-surface-variant">
+<span class="font-bold cursor-pointer hover:underline">Create a Page</span> for a celebrity, brand or business.
+                    </p>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer: Responsive and Informational -->
+<footer class="bg-surface-container-lowest mt-auto pt-8 pb-12">
+<div class="max-w-container-max mx-auto px-gutter text-on-surface-variant">
+<!-- Language Bar -->
+<div class="flex flex-wrap gap-x-4 gap-y-1 font-label-sm border-b border-outline-variant pb-3 mb-3">
+<a class="hover:underline" href="#">English (US)</a>
+<a class="hover:underline" href="#">Español</a>
+<a class="hover:underline" href="#">Français (France)</a>
+<a class="hover:underline" href="#">Português (Brasil)</a>
+<a class="hover:underline" href="#">Deutsch</a>
+<a class="hover:underline" href="#">Italiano</a>
+<a class="hover:underline" href="#">العربية</a>
+<a class="hover:underline" href="#">हिन्दी</a>
+<a class="hover:underline" href="#">中文(简体)</a>
+<a class="hover:underline" href="#">日本語</a>
+<button class="bg-surface-container-high px-2 rounded border border-outline-variant">
+<span class="material-symbols-outlined text-[14px]">add</span>
+</button>
+</div>
+<!-- Links Bar -->
+<div class="flex flex-wrap gap-x-4 gap-y-1 font-label-sm">
+<a class="hover:underline" href="#">Sign Up</a>
+<a class="hover:underline" href="#">Log In</a>
+<a class="hover:underline" href="#">Messenger</a>
+<a class="hover:underline" href="#">SocialFeed Lite</a>
+<a class="hover:underline" href="#">Video</a>
+<a class="hover:underline" href="#">Places</a>
+<a class="hover:underline" href="#">Games</a>
+<a class="hover:underline" href="#">Marketplace</a>
+<a class="hover:underline" href="#">Meta Pay</a>
+<a class="hover:underline" href="#">Meta Store</a>
+<a class="hover:underline" href="#">Meta Quest</a>
+<a class="hover:underline" href="#">Imagine with Meta AI</a>
+<a class="hover:underline" href="#">Instagram</a>
+<a class="hover:underline" href="#">Threads</a>
+<a class="hover:underline" href="#">Fundraisers</a>
+<a class="hover:underline" href="#">Services</a>
+<a class="hover:underline" href="#">Voting Information Center</a>
+<a class="hover:underline" href="#">Privacy Policy</a>
+<a class="hover:underline" href="#">Privacy Center</a>
+<a class="hover:underline" href="#">Groups</a>
+<a class="hover:underline" href="#">About</a>
+<a class="hover:underline" href="#">Create Ad</a>
+<a class="hover:underline" href="#">Create Page</a>
+<a class="hover:underline" href="#">Developers</a>
+<a class="hover:underline" href="#">Careers</a>
+<a class="hover:underline" href="#">Cookies</a>
+<a class="hover:underline" href="#">Ad Choices</a>
+<a class="hover:underline" href="#">Terms</a>
+<a class="hover:underline" href="#">Help</a>
+<a class="hover:underline" href="#">Contact Uploading &amp; Non-Users</a>
+</div>
+<div class="mt-space-lg font-label-sm">
+                SocialFeed © 2024
+            </div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for the login button
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', function() {
+                this.style.transform = 'scale(0.98)';
+            });
+            button.addEventListener('mouseup', function() {
+                this.style.transform = 'scale(1)';
+            });
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+
+        // Subtle parallax effect on the decorative image
+        window.addEventListener('mousemove', (e) => {
+            const decorImg = document.querySelector('[data-alt]');
+            if(decorImg) {
+                const moveX = (e.clientX - window.innerWidth / 2) * 0.005;
+                const moveY = (e.clientY - window.innerHeight / 2) * 0.005;
+                decorImg.style.transform = `scale(1.1) translate(${moveX}px, ${moveY}px)`;
+            }
+        });
+    </script>
+</body></html>
