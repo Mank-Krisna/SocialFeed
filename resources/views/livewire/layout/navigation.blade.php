@@ -131,6 +131,7 @@ new class extends Component
     </div>
 
     <!-- Responsive Top Drawer Menu (Mobile) -->
+    @auth
     <div :class="{'block': open, 'hidden': ! open}" class="hidden md:hidden border-t border-[var(--card-border)] bg-[var(--drawer-bg)] shadow-lg">
         <div class="pt-2 pb-3 space-y-1 px-4">
             <x-responsive-nav-link :href="route('feed')" :active="request()->routeIs('feed')" wire:navigate>
