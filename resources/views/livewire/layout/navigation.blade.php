@@ -31,14 +31,14 @@
 
                 {{-- Mobile: settings icon --}}
                 <a href="{{ route('profile.edit') }}" wire:navigate class="md:hidden p-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-hover)] transition" title="Pengaturan">
-                    <span class="material-symbols-outlined text-xl">settings</span>
+                    <span class="material-symbols-outlined text-xl" aria-hidden="true">settings</span>
                 </a>
 
                 {{-- User Dropdown --}}
                 <div class="hidden sm:flex sm:items-center">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
-                            <button class="inline-flex items-center gap-2 px-2.5 py-1.5 border border-[var(--card-border)] text-sm font-medium rounded-full text-[var(--text-primary)] bg-[var(--card-bg)] hover:bg-[var(--surface-hover)] focus:outline-none transition btn-press">
+                            <button class="inline-flex items-center gap-2 px-2.5 py-1.5 border border-[var(--card-border)] text-sm font-medium rounded-full text-[var(--text-primary)] bg-[var(--card-bg)] hover:bg-[var(--surface-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 transition btn-press">
                                 <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" width="32" height="32" class="w-8 h-8 rounded-full object-cover avatar-hover" />
                                 <span class="material-symbols-outlined text-lg text-[var(--text-secondary)]" aria-hidden="true">expand_more</span>
                             </button>

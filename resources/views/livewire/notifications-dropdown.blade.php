@@ -1,6 +1,6 @@
 <div class="relative" x-data="{ open: @entangle('open') }" @click.away="$wire.close()">
-    <button wire:click="toggle" class="relative p-2 rounded-full hover:bg-[#f3f3f7] transition">
-        <span class="material-symbols-outlined text-[22px] text-[#727785]">notifications</span>
+    <button wire:click="toggle" class="relative p-2 rounded-full hover:bg-[#f3f3f7] transition" aria-label="Notifikasi">
+        <span class="material-symbols-outlined text-[22px] text-[#727785]" aria-hidden="true">notifications</span>
         @if($this->unread_count > 0)
             <span class="absolute -top-0.5 -right-0.5 w-5 h-5 bg-[#ff4444] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                 {{ $this->unread_count > 9 ? '9+' : $this->unread_count }}
@@ -19,7 +19,7 @@
         <div class="max-h-80 overflow-y-auto">
             @forelse($this->notifications as $notif)
                 <a href="{{ $notif->link ?? '#' }}" wire:click="markAsRead({{ $notif->id }})" class="flex items-start gap-2.5 px-3 py-2.5 hover:bg-[#f9f9fd] transition {{ $notif->read_at ? '' : 'bg-[#0058bc]/[0.03]' }}">
-                    <img src="{{ $notif->sender->avatar_url }}" class="w-9 h-9 rounded-full object-cover shrink-0 mt-0.5" />
+                    <img src="{{ $notif->sender->avatar_url }}" alt="{{ $notif->sender->name }}" width="36" height="36" class="w-9 h-9 rounded-full object-cover shrink-0 mt-0.5" />
                     <div class="flex-1 min-w-0">
                         <p class="text-xs text-[#1a1c1f] leading-relaxed">
                             <span class="font-bold">{{ $notif->sender->name }}</span>
@@ -33,7 +33,7 @@
                 </a>
             @empty
                 <div class="py-8 text-center">
-                    <span class="material-symbols-outlined text-3xl text-[#d0d0d8]">notifications_off</span>
+                    <span class="material-symbols-outlined text-3xl text-[#d0d0d8]" aria-hidden="true">notifications_off</span>
                     <p class="text-xs text-[#727785] mt-1">Belum ada notifikasi</p>
                 </div>
             @endforelse

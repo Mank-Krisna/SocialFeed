@@ -15,11 +15,11 @@
             <div class="mt-1 mb-3">
                 @if ($cover_photo && $cover_photo->isPreviewable())
                     <div class="w-full h-40 md:h-48 rounded-xl overflow-hidden bg-[#f3f3f7]">
-                        <img src="{{ $cover_photo->temporaryUrl() }}" class="w-full h-full object-cover" alt="Cover Preview">
+                        <img src="{{ $cover_photo->temporaryUrl() }}" alt="Cover Preview" width="800" height="300" class="w-full h-full object-cover">
                     </div>
                 @elseif (auth()->user()->cover_photo_url)
                     <div class="w-full h-40 md:h-48 rounded-xl overflow-hidden bg-[#f3f3f7]">
-                        <img src="{{ auth()->user()->cover_photo_url }}" class="w-full h-full object-cover" alt="Current Cover">
+                        <img src="{{ auth()->user()->cover_photo_url }}" alt="Current Cover" width="800" height="300" class="w-full h-full object-cover">
                     </div>
                 @else
                     <div class="w-full h-40 md:h-48 rounded-xl bg-[#f3f3f7] flex items-center justify-center text-[#727785]">
@@ -36,6 +36,7 @@
             <img 
                 src="{{ $avatar ? $avatar->temporaryUrl() : auth()->user()->avatar_url }}" 
                 alt="Avatar" 
+                width="64" height="64"
                 class="w-16 h-16 rounded-full object-cover border-2 border-[#0058bc]"
             />
             <div class="space-y-1">

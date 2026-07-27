@@ -36,9 +36,10 @@
                     wire:click="deletePost" 
                     wire:confirm="Yakin ingin menghapus postingan ini?"
                     class="p-1 rounded-lg text-[var(--text-secondary)] hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950 transition"
+                    aria-label="Hapus Postingan"
                     title="Hapus Postingan"
                 >
-                    <span class="material-symbols-outlined text-lg">delete</span>
+                    <span class="material-symbols-outlined text-lg" aria-hidden="true">delete</span>
                 </button>
             @endif
         </div>
@@ -71,7 +72,7 @@
                     </div>
                 @else
                     <a href="{{ $media->url }}" target="_blank" rel="noopener noreferrer" class="block aspect-video bg-[var(--surface-hover)] overflow-hidden rounded-lg hover:opacity-95 transition border border-[var(--card-border)]">
-                        <img src="{{ $media->url }}" alt="Media" class="w-full h-full object-cover" />
+                        <img src="{{ $media->url }}" alt="Media" width="400" height="225" class="w-full h-full object-cover" />
                     </a>
                 @endif
             @endforeach
@@ -87,7 +88,7 @@
         <div class="flex items-center gap-1 px-1 text-xs text-[var(--text-secondary)]">
             <div class="flex items-center -space-x-1">
                 @foreach($this->reactionCounts->take(3) as $type => $count)
-                    <span class="text-sm" title="{{ ucfirst($type) }}">{{ \App\Models\Reaction::TYPES[$type] }}</span>
+                    <span class="text-sm" title="{{ ucfirst($type) }}" aria-hidden="true">{{ \App\Models\Reaction::TYPES[$type] }}</span>
                 @endforeach
             </div>
             <span class="font-semibold">{{ $post->reactions->count() }}</span>
@@ -103,7 +104,10 @@
             <button 
                 @click="$wire.react('{{ $this->userReaction ?? 'like' }}')"
                 @mouseenter="showPicker = true"
+                @focus="showPicker = true"
+                @keydown.escape="showPicker = false"
                 wire:loading.attr="disabled"
+                aria-label="{{ $this->userReaction ? 'Reaksi: ' . $this->userReaction : 'Beri reaksi' }}"
                 class="w-full py-1.5 rounded-xl flex items-center justify-center gap-1 text-sm font-semibold transition btn-press disabled:opacity-50 {{ $this->userReaction ? 'text-[var(--accent)] bg-[var(--accent)]/10' : 'text-[var(--text-secondary)] hover:bg-[var(--surface-hover)]' }}"
                 x-on:click="$el.querySelector('.material-symbols-outlined')?.classList.add('animate-like-bounce'); setTimeout(() => $el.querySelector('.material-symbols-outlined')?.classList.remove('animate-like-bounce'), 350)"
             >
@@ -139,6 +143,7 @@
         {{-- Comment Button --}}
         <button 
             wire:click="toggleComments" 
+            aria-label="Komentar"
             class="py-1.5 rounded-xl flex items-center justify-center gap-1 text-sm font-semibold text-[var(--text-secondary)] hover:bg-[var(--surface-hover)] btn-press transition"
         >
             <span aria-hidden="true" class="material-symbols-outlined text-xl">chat_bubble</span>

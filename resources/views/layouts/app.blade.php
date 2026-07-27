@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" x-data="{ dark: localStorage.getItem('darkMode') === 'true' }" x-init="$watch('dark', val => { localStorage.setItem('darkMode', val); document.documentElement.classList.toggle('dark', val) })" :class="{ 'dark': dark }">
+<html lang="id" x-data="{ dark: localStorage.getItem('darkMode') === 'true' }" x-init="$watch('dark', val => { localStorage.setItem('darkMode', val); document.documentElement.classList.toggle('dark', val); document.querySelector('meta[name=theme-color]').setAttribute('content', val ? '#1a1c1f' : '#0058bc') })" :class="{ 'dark': dark }" :style="dark ? 'color-scheme: dark' : ''">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -120,7 +120,7 @@
         </div>
 
         <template x-teleport="body">
-            <div x-show="toast" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-4" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] px-5 py-3 rounded-xl shadow-lg text-sm font-semibold flex items-center gap-2" :class="toastType === 'error' ? 'bg-red-600 text-white' : 'dark:bg-gray-800 bg-[#1a1c1f] text-white'" x-text="toast"></div>
+            <div x-show="toast" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-4" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] px-5 py-3 rounded-xl shadow-lg text-sm font-semibold flex items-center gap-2" :class="toastType === 'error' ? 'bg-red-600 text-white' : 'dark:bg-gray-800 bg-[#1a1c1f] text-white'" x-text="toast" role="status" aria-live="polite"></div>
         </template>
     </body>
 </html>

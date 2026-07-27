@@ -11,7 +11,8 @@
                 <textarea 
                     wire:model.live="body" 
                     rows="3" 
-                    placeholder="Apa yang Anda pikirkan, {{ auth()->user()->name }}?" 
+                    name="body"
+                    placeholder="Apa yang Anda pikirkan, {{ auth()->user()->name }}?…" 
                     class="w-full p-2.5 bg-[var(--surface-hover)] focus:bg-[var(--card-bg)] text-sm text-[var(--text-primary)] rounded-xl border border-transparent focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] outline-none resize-none transition input-glow"
                 ></textarea>
                 @error('body')
@@ -32,7 +33,7 @@
                             @endphp
                             <div class="relative rounded-lg overflow-hidden border border-[var(--card-border)] aspect-video group bg-slate-900 flex items-center justify-center">
                                 @if ($isImage)
-                                    <img src="{{ $file->temporaryUrl() }}" class="w-full h-full object-cover" />
+                                    <img src="{{ $file->temporaryUrl() }}" alt="Preview" width="400" height="225" class="w-full h-full object-cover" />
                                 @else
                                     <div class="w-full h-full flex flex-col items-center justify-center text-white p-2 text-center bg-slate-800">
                                         <span aria-hidden="true" class="material-symbols-outlined text-3xl text-purple-400">movie</span>

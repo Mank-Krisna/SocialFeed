@@ -9,13 +9,15 @@
         <input 
             type="text" 
             wire:model.live="body" 
-            placeholder="Tulis komentar..." 
+            name="comment"
+            aria-label="Tulis komentar"
+            placeholder="Tulis komentar…" 
             class="flex-1 px-3 py-1.5 bg-[var(--surface-hover)] focus:bg-[var(--card-bg)] text-xs text-[var(--text-primary)] rounded-full border border-transparent focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] outline-none transition"
         />
         <button 
             type="submit" 
+            wire:loading.attr="disabled"
             class="px-3 py-1.5 bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white text-xs font-bold rounded-full transition disabled:opacity-50"
-            {{ empty(trim($body)) ? 'disabled' : '' }}
         >
             Kirim
         </button>
