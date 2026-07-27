@@ -9,6 +9,28 @@
     </header>
 
     <form wire:submit.prevent="updateProfileInformation" class="space-y-4">
+        <!-- Cover Photo Upload — top banner -->
+        <div>
+            <x-input-label for="cover_photo" value="Foto Sampul (Cover)" />
+            <div class="mt-1 mb-3">
+                @if ($cover_photo && $cover_photo->isPreviewable())
+                    <div class="w-full h-40 md:h-48 rounded-xl overflow-hidden bg-[#f3f3f7]">
+                        <img src="{{ $cover_photo->temporaryUrl() }}" class="w-full h-full object-cover" alt="Cover Preview">
+                    </div>
+                @elseif (auth()->user()->cover_photo_url)
+                    <div class="w-full h-40 md:h-48 rounded-xl overflow-hidden bg-[#f3f3f7]">
+                        <img src="{{ auth()->user()->cover_photo_url }}" class="w-full h-full object-cover" alt="Current Cover">
+                    </div>
+                @else
+                    <div class="w-full h-40 md:h-48 rounded-xl bg-[#f3f3f7] flex items-center justify-center text-[#727785]">
+                        <span class="text-xs">Belum ada foto sampul</span>
+                    </div>
+                @endif
+            </div>
+            <input type="file" wire:model="cover_photo" id="cover_photo" accept="image/*" class="text-xs text-[#727785] file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#0058bc]/10 file:text-[#0058bc] hover:file:bg-[#0058bc]/20" />
+            <x-input-error class="mt-1" :messages="$errors->get('cover_photo')" />
+        </div>
+
         <!-- Avatar Preview & Upload -->
         <div class="flex items-center gap-4">
             <img 
@@ -21,28 +43,6 @@
                 <input type="file" wire:model="avatar" id="avatar" accept="image/*" class="text-xs text-[#727785] file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#0058bc]/10 file:text-[#0058bc] hover:file:bg-[#0058bc]/20" />
                 <x-input-error class="mt-1" :messages="$errors->get('avatar')" />
             </div>
-        </div>
-
-        <!-- Cover Photo Upload -->
-        <div>
-            <x-input-label for="cover_photo" value="Foto Sampul (Cover)" />
-            <div class="mt-1 mb-3">
-                @if ($cover_photo && $cover_photo->isPreviewable())
-                    <div class="w-full h-32 rounded-lg overflow-hidden bg-[#f3f3f7]">
-                        <img src="{{ $cover_photo->temporaryUrl() }}" class="w-full h-full object-cover" alt="Cover Preview">
-                    </div>
-                @elseif (auth()->user()->cover_photo_url)
-                    <div class="w-full h-32 rounded-lg overflow-hidden bg-[#f3f3f7]">
-                        <img src="{{ auth()->user()->cover_photo_url }}" class="w-full h-full object-cover" alt="Current Cover">
-                    </div>
-                @else
-                    <div class="w-full h-32 rounded-lg bg-[#f3f3f7] flex items-center justify-center text-[#727785]">
-                        <span class="text-xs">Belum ada foto sampul</span>
-                    </div>
-                @endif
-            </div>
-            <input type="file" wire:model="cover_photo" id="cover_photo" accept="image/*" class="mt-1 text-xs text-[#727785] file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#0058bc]/10 file:text-[#0058bc] hover:file:bg-[#0058bc]/20" />
-            <x-input-error class="mt-1" :messages="$errors->get('cover_photo')" />
         </div>
 
         <!-- Name -->
