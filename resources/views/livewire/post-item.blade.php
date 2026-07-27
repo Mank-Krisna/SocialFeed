@@ -122,7 +122,7 @@
                  x-transition:leave="transition ease-in duration-75"
                  x-transition:leave-start="opacity-100 scale-100"
                  x-transition:leave-end="opacity-0 scale-90"
-                 class="absolute -top-14 left-1/2 -translate-x-1/2 bg-white dark:bg-[#1a1c1f] rounded-full shadow-lg border border-[var(--card-border)] px-2 py-1.5 flex gap-1 z-20"
+                 class="absolute -top-14 left-1/2 -translate-x-1/2 bg-white dark:bg-[#1a1c1f] rounded-full shadow-lg border border-[var(--card-border)] px-2 py-1.5 flex gap-1 z-50"
                  @click.away="showPicker = false">
                 
                 @foreach(\App\Models\Reaction::TYPES as $type => $emoji)
