@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Comment;
 use App\Models\Notification;
 use App\Models\Post;
+use App\Models\Reaction;
 use App\Models\User;
 
 class NotificationService
@@ -19,6 +20,25 @@ class NotificationService
             'type' => 'like',
             'data' => [
                 'message' => 'menyukai postingan Anda.',
+                'link' => route('posts.show', $post->id),
+            ],
+        ]);
+    }
+
+    public function postReacted(Post $post, string $type): void
+    {
+        if ($post->user_id === auth()->id()) return;
+
+        $emoji = Reaction::TYPES[$type] ?? '👍';
+
+        Notification::create([
+            'user_id' => $post->user_id,
+            'sender_id' => auth()->id(),
+            'type' => 'reaction',
+            'data' => [
+                'post_id' => $post->id,
+                'reaction_type' => $type,
+                'message' => 'bereaksi ' . $emoji . ' pada postinganmu.',
                 'link' => route('posts.show', $post->id),
             ],
         ]);

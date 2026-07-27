@@ -8,7 +8,7 @@
         <div class="p-3 border-b border-[#e2e2e6] dark:border-[#2d2f34] space-y-2">
             <div class="flex items-center justify-between">
                 <h2 class="font-bold text-sm text-[#1a1c1f] dark:text-[#e2e2e6]">Pesan</h2>
-                <span class="text-xs text-[#727785] dark:text-[#9ca3af]">{{ $conversations->count() }} percakapan</span>
+                <span class="text-xs text-[#727785] dark:text-[#9ca3af]">{{ $this->conversations->count() }} percakapan</span>
             </div>
             <div class="relative">
                 <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-[#727785] text-sm">search</span>
@@ -42,7 +42,7 @@
                 </div>
             @else
                 <div class="p-2 space-y-0.5">
-                    @forelse ($conversations as $conv)
+                    @forelse ($this->conversations as $conv)
                         @php $other = $conv->otherUser(auth()->user()); @endphp
                         @if ($other)
                         <button 
@@ -52,8 +52,8 @@
                         >
                             <div class="relative shrink-0">
                                 <img src="{{ $other->avatar_url }}" class="w-10 h-10 rounded-full object-cover" />
-                                @if ($conv->unread > 0)
-                                    <span class="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">{{ $conv->unread > 9 ? '9+' : $conv->unread }}</span>
+                                @if ($conv->unread_count > 0)
+                                    <span class="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">{{ $conv->unread_count > 9 ? '9+' : $conv->unread_count }}</span>
                                 @endif
                             </div>
                             <div class="min-w-0 flex-1">
@@ -63,7 +63,7 @@
                                         <span class="text-[10px] text-[#727785] shrink-0">{{ $conv->messages->first()->created_at->diffForHumans(['short' => true]) }}</span>
                                     @endif
                                 </div>
-                                <p class="text-[11px] text-[#727785] dark:text-[#9ca3af] truncate {{ $conv->unread > 0 ? 'font-semibold' : '' }}">
+                                <p class="text-[11px] text-[#727785] dark:text-[#9ca3af] truncate {{ $conv->unread_count > 0 ? 'font-semibold' : '' }}">
                                     {{ $conv->messages->first()?->body ?? 'Belum ada pesan' }}
                                 </p>
                             </div>
@@ -86,7 +86,7 @@
          x-show="showPanel === 'chat' || $wire.activeConversationId">
         @if ($activeConversationId)
             @php 
-                $conv = $conversations->firstWhere('id', $activeConversationId);
+                $conv = $this->conversations->firstWhere('id', $activeConversationId);
                 $other = $conv?->otherUser(auth()->user());
             @endphp
             <div class="p-3 border-b border-[#e2e2e6] dark:border-[#2d2f34] flex items-center gap-2.5">
@@ -102,8 +102,8 @@
                 @endif
             </div>
 
-            <div wire:poll.10s="loadMessages" class="flex-1 overflow-y-auto p-3 space-y-3">
-                @forelse ($messages as $msg)
+            <div wire:poll.10s class="flex-1 overflow-y-auto p-3 space-y-3">
+                @forelse ($this->messages as $msg)
                     <div class="flex {{ $msg->user_id === auth()->id() ? 'justify-end' : 'justify-start' }}">
                         <div class="max-w-[80%] {{ $msg->user_id === auth()->id() ? 'bg-[#0058bc] text-white' : 'bg-[#f3f3f7] dark:bg-[#25282e] text-[#1a1c1f] dark:text-[#e2e2e6]' }} p-2.5 rounded-2xl {{ $msg->user_id === auth()->id() ? 'rounded-br-md' : 'rounded-bl-md' }}">
                             <p class="text-xs leading-relaxed whitespace-pre-line">{{ $msg->body }}</p>

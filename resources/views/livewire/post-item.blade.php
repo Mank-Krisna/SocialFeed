@@ -13,7 +13,7 @@
                     src="{{ $post->user->avatar_url }}" 
                     alt="{{ $post->user->name }}" 
                     width="40" height="40"
-                    class="w-10 h-10 rounded-full object-cover border border-[var(--card-border)] hover:opacity-90 transition"
+                    class="w-10 h-10 rounded-full object-cover border border-[var(--card-border)] avatar-hover"
                 />
             </a>
             <div>
@@ -36,9 +36,10 @@
                     wire:click="deletePost" 
                     wire:confirm="Yakin ingin menghapus postingan ini?"
                     class="p-1 rounded-lg text-[var(--text-secondary)] hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950 transition"
+                    aria-label="Hapus Postingan"
                     title="Hapus Postingan"
                 >
-                    <span class="material-symbols-outlined text-lg">delete</span>
+                    <span class="material-symbols-outlined text-lg" aria-hidden="true">delete</span>
                 </button>
             @endif
         </div>
@@ -71,7 +72,7 @@
                     </div>
                 @else
                     <a href="{{ $media->url }}" target="_blank" rel="noopener noreferrer" class="block aspect-video bg-[var(--surface-hover)] overflow-hidden rounded-lg hover:opacity-95 transition border border-[var(--card-border)]">
-                        <img src="{{ $media->url }}" alt="Media" class="w-full h-full object-cover" />
+                        <img src="{{ $media->url }}" alt="Media" width="400" height="225" class="w-full h-full object-cover" />
                     </a>
                 @endif
             @endforeach
@@ -82,40 +83,76 @@
         <livewire:poll-display :poll="$post->poll" :key="'poll-'.$post->id" />
     @endif
 
-    <div class="flex items-center justify-between text-xs text-[var(--text-secondary)] pt-1.5 border-t border-[var(--surface-hover)]">
-        <div class="flex items-center gap-1">
-            <span class="w-4 h-4 rounded-full bg-[var(--accent)] text-white flex items-center justify-center text-[10px]">
-                <span aria-hidden="true" class="material-symbols-outlined text-[12px] filled">thumb_up</span>
-            </span>
-            <span class="font-semibold">{{ $likesCount }} Suka</span>
+    {{-- Reaction Counts Summary --}}
+    @if(count($this->reactionCounts) > 0)
+        <div class="flex items-center gap-1 px-1 text-xs text-[var(--text-secondary)]">
+            <div class="flex items-center -space-x-1">
+                @foreach($this->reactionCounts->take(3) as $type => $count)
+                    <span class="text-sm" title="{{ ucfirst($type) }}" aria-hidden="true">{{ \App\Models\Reaction::TYPES[$type] }}</span>
+                @endforeach
+            </div>
+            <span class="font-semibold">{{ $post->reactions->count() }}</span>
         </div>
-        <div class="flex items-center gap-3">
-            <span class="font-semibold">{{ $repostsCount }} Bagikan</span>
-            <button wire:click="toggleComments" class="hover:underline font-semibold">
-                {{ $commentsCount }} Komentar
+    @endif
+
+    {{-- Action Buttons --}}
+    <div class="grid grid-cols-4 gap-0.5 pt-1.5 border-t border-[var(--surface-hover)]"
+         x-data="{ showPicker: false }" @mouseleave="showPicker = false">
+        
+        {{-- Reaction Button --}}
+        <div class="relative">
+            <button 
+                @click="$wire.react('{{ $this->userReaction ?? 'like' }}')"
+                @mouseenter="showPicker = true"
+                @focus="showPicker = true"
+                @keydown.escape="showPicker = false"
+                wire:loading.attr="disabled"
+                aria-label="{{ $this->userReaction ? 'Reaksi: ' . $this->userReaction : 'Beri reaksi' }}"
+                class="w-full py-1.5 rounded-xl flex items-center justify-center gap-1 text-sm font-semibold transition btn-press disabled:opacity-50 {{ $this->userReaction ? 'text-[var(--accent)] bg-[var(--accent)]/10' : 'text-[var(--text-secondary)] hover:bg-[var(--surface-hover)]' }}"
+                x-on:click="$el.querySelector('.material-symbols-outlined')?.classList.add('animate-like-bounce'); setTimeout(() => $el.querySelector('.material-symbols-outlined')?.classList.remove('animate-like-bounce'), 350)"
+            >
+                @if($this->userReaction)
+                    <span class="text-lg">{{ \App\Models\Reaction::TYPES[$this->userReaction] }}</span>
+                @else
+                    <span aria-hidden="true" class="material-symbols-outlined text-xl">thumb_up</span>
+                @endif
             </button>
+
+            {{-- Reaction Picker --}}
+            <div x-show="showPicker" 
+                 x-transition:enter="transition ease-out duration-100"
+                 x-transition:enter-start="opacity-0 scale-90"
+                 x-transition:enter-end="opacity-100 scale-100"
+                 x-transition:leave="transition ease-in duration-75"
+                 x-transition:leave-start="opacity-100 scale-100"
+                 x-transition:leave-end="opacity-0 scale-90"
+                 class="absolute -top-14 left-1/2 -translate-x-1/2 bg-white dark:bg-[#1a1c1f] rounded-full shadow-lg border border-[var(--card-border)] px-2 py-1.5 flex gap-1 z-50"
+                 @click.away="showPicker = false">
+                
+                @foreach(\App\Models\Reaction::TYPES as $type => $emoji)
+                    <button wire:click="react('{{ $type }}')" 
+                            @click="showPicker = false"
+                            class="text-2xl hover:scale-125 transition-transform p-1 rounded-full hover:bg-[var(--surface-hover)]"
+                            title="{{ ucfirst($type) }}">
+                        {{ $emoji }}
+                    </button>
+                @endforeach
+            </div>
         </div>
-    </div>
 
-    <div class="grid grid-cols-4 gap-0.5 pt-1.5 border-t border-[var(--surface-hover)]">
-        <button 
-            wire:click="toggleLike" 
-            wire:loading.attr="disabled"
-            class="py-1.5 rounded-xl flex items-center justify-center gap-1 text-sm font-semibold transition active:scale-90 disabled:opacity-50 {{ $isLiked ? 'text-[var(--accent)] bg-[var(--accent)]/10' : 'text-[var(--text-secondary)] hover:bg-[var(--surface-hover)]' }}"
-            x-on:click="$el.querySelector('.material-symbols-outlined').classList.add('animate-like-bounce'); setTimeout(() => $el.querySelector('.material-symbols-outlined').classList.remove('animate-like-bounce'), 350)"
-        >
-            <span aria-hidden="true" class="material-symbols-outlined text-xl {{ $isLiked ? 'filled' : '' }}">thumb_up</span>
-        </button>
-
+        {{-- Comment Button --}}
         <button 
             wire:click="toggleComments" 
-            class="py-1.5 rounded-xl flex items-center justify-center gap-1 text-sm font-semibold text-[var(--text-secondary)] hover:bg-[var(--surface-hover)] active:scale-90 transition"
+            aria-label="Komentar"
+            class="py-1.5 rounded-xl flex items-center justify-center gap-1 text-sm font-semibold text-[var(--text-secondary)] hover:bg-[var(--surface-hover)] btn-press transition"
         >
             <span aria-hidden="true" class="material-symbols-outlined text-xl">chat_bubble</span>
         </button>
 
+        {{-- Repost Button --}}
         <livewire:repost-button :post="$post" :key="'repost-'.$post->id" />
 
+        {{-- Bookmark Button --}}
         <livewire:bookmark-button :post="$post" :key="'bookmark-'.$post->id" />
     </div>
 

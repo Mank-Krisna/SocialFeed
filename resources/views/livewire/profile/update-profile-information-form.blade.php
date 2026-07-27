@@ -1,69 +1,3 @@
-<?php
-
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Validation\Rule;
-use Livewire\Volt\Component;
-use Livewire\WithFileUploads;
-
-new class extends Component
-{
-    use WithFileUploads;
-
-    public string $name = '';
-    public string $username = '';
-    public string $email = '';
-    public string $bio = '';
-    public $avatar = null;
-    public $cover_photo = null;
-
-    public function mount(): void
-    {
-        $user = Auth::user();
-        $this->name = $user->name ?? '';
-        $this->username = $user->username ?? '';
-        $this->email = $user->email ?? '';
-        $this->bio = $user->bio ?? '';
-    }
-
-    public function updateProfileInformation(): void
-    {
-        $user = Auth::user();
-
-        $validated = $this->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'username' => ['nullable', 'string', 'max:50', 'alpha_dash', Rule::unique(User::class)->ignore($user->id)],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
-            'bio' => ['nullable', 'string', 'max:300'],
-            'avatar' => ['nullable', 'image', 'max:2048'],
-            'cover_photo' => ['nullable', 'image', 'max:3048'],
-        ]);
-
-        if ($this->avatar) {
-            $validated['avatar'] = $this->avatar->store('avatars', 'public');
-        } else {
-            unset($validated['avatar']);
-        }
-
-        if ($this->cover_photo) {
-            $validated['cover_photo'] = $this->cover_photo->store('covers', 'public');
-        } else {
-            unset($validated['cover_photo']);
-        }
-
-        $user->fill($validated);
-
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
-        }
-
-        $user->save();
-
-        $this->dispatch('profile-updated', name: $user->name);
-    }
-}; ?>
-
 <section class="space-y-6">
     <header>
         <h2 class="text-lg font-bold text-[#1a1c1f]">
@@ -75,11 +9,34 @@ new class extends Component
     </header>
 
     <form wire:submit.prevent="updateProfileInformation" class="space-y-4">
+        <!-- Cover Photo Upload — top banner -->
+        <div>
+            <x-input-label for="cover_photo" value="Foto Sampul (Cover)" />
+            <div class="mt-1 mb-3">
+                @if ($cover_photo && $cover_photo->isPreviewable())
+                    <div class="w-full h-40 md:h-48 rounded-xl overflow-hidden bg-[#f3f3f7]">
+                        <img src="{{ $cover_photo->temporaryUrl() }}" alt="Cover Preview" width="800" height="300" class="w-full h-full object-cover">
+                    </div>
+                @elseif (auth()->user()->cover_photo_url)
+                    <div class="w-full h-40 md:h-48 rounded-xl overflow-hidden bg-[#f3f3f7]">
+                        <img src="{{ auth()->user()->cover_photo_url }}" alt="Current Cover" width="800" height="300" class="w-full h-full object-cover">
+                    </div>
+                @else
+                    <div class="w-full h-40 md:h-48 rounded-xl bg-[#f3f3f7] flex items-center justify-center text-[#727785]">
+                        <span class="text-xs">Belum ada foto sampul</span>
+                    </div>
+                @endif
+            </div>
+            <input type="file" wire:model="cover_photo" id="cover_photo" accept="image/*" class="text-xs text-[#727785] file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#0058bc]/10 file:text-[#0058bc] hover:file:bg-[#0058bc]/20" />
+            <x-input-error class="mt-1" :messages="$errors->get('cover_photo')" />
+        </div>
+
         <!-- Avatar Preview & Upload -->
         <div class="flex items-center gap-4">
             <img 
                 src="{{ $avatar ? $avatar->temporaryUrl() : auth()->user()->avatar_url }}" 
                 alt="Avatar" 
+                width="64" height="64"
                 class="w-16 h-16 rounded-full object-cover border-2 border-[#0058bc]"
             />
             <div class="space-y-1">
@@ -87,13 +44,6 @@ new class extends Component
                 <input type="file" wire:model="avatar" id="avatar" accept="image/*" class="text-xs text-[#727785] file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#0058bc]/10 file:text-[#0058bc] hover:file:bg-[#0058bc]/20" />
                 <x-input-error class="mt-1" :messages="$errors->get('avatar')" />
             </div>
-        </div>
-
-        <!-- Cover Photo Upload -->
-        <div>
-            <x-input-label for="cover_photo" value="Foto Sampul (Cover)" />
-            <input type="file" wire:model="cover_photo" id="cover_photo" accept="image/*" class="mt-1 text-xs text-[#727785] file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#0058bc]/10 file:text-[#0058bc] hover:file:bg-[#0058bc]/20" />
-            <x-input-error class="mt-1" :messages="$errors->get('cover_photo')" />
         </div>
 
         <!-- Name -->

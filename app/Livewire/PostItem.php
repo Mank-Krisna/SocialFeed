@@ -2,17 +2,17 @@
 
 namespace App\Livewire;
 
-use App\Models\Like;
+use App\Models\Reaction;
 use App\Models\Post;
 use App\Services\NotificationService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
 class PostItem extends Component
 {
     public Post $post;
-    public bool $isLiked = false;
-    public int $likesCount = 0;
+    public bool $showReactionPicker = false;
     public int $commentsCount = 0;
     public int $repostsCount = 0;
     public bool $showComments = false;
@@ -20,32 +20,53 @@ class PostItem extends Component
     public function mount(Post $post): void
     {
         $this->post = $post;
-        $this->isLiked = $post->is_liked_by_user ?? $post->isLikedBy(Auth::user());
-        $this->likesCount = $post->likes_count ?? $post->likes()->count();
         $this->commentsCount = $post->comments_count ?? $post->comments()->count();
         $this->repostsCount = $post->reposts_count ?? $post->reposts()->count();
     }
 
-    public function toggleLike(): void
+    public function react(string $type): void
     {
-        $userId = Auth::id();
-
-        $like = Like::where('user_id', $userId)->where('post_id', $this->post->id)->first();
-
-        if ($like) {
-            $like->delete();
-            $this->isLiked = false;
-            $this->likesCount = max(0, $this->likesCount - 1);
-        } else {
-            Like::create([
-                'user_id' => $userId,
-                'post_id' => $this->post->id,
-            ]);
-            $this->isLiked = true;
-            $this->likesCount++;
-
-            app(NotificationService::class)->postLiked($this->post, Auth::user());
+        if (!in_array($type, array_keys(Reaction::TYPES))) {
+            return;
         }
+
+        $existing = $this->post->reactions()
+            ->where('user_id', auth()->id())
+            ->first();
+
+        if ($existing) {
+            if ($existing->type === $type) {
+                $existing->delete();
+                $this->dispatch('notify', message: 'Reaksi dihapus', type: 'success');
+            } else {
+                $existing->update(['type' => $type]);
+                $this->dispatch('notify', message: 'Reaksi diperbarui', type: 'success');
+            }
+        } else {
+            $this->post->reactions()->create([
+                'user_id' => auth()->id(),
+                'type' => $type,
+            ]);
+
+            if ($this->post->user_id !== auth()->id()) {
+                app(NotificationService::class)->postReacted($this->post, $type);
+            }
+
+            $this->dispatch('notify', message: 'Reaksi ditambahkan', type: 'success');
+        }
+
+        $this->showReactionPicker = false;
+        $this->dispatch('post-reacted');
+    }
+
+    public function getReactionCountsProperty()
+    {
+        return $this->post->reaction_counts;
+    }
+
+    public function getUserReactionProperty()
+    {
+        return $this->post->user_reaction;
     }
 
     public function toggleComments(): void
@@ -55,11 +76,11 @@ class PostItem extends Component
 
     public function deletePost(): void
     {
-        if ($this->post->user_id === Auth::id()) {
-            $this->post->delete();
-            $this->dispatch('post-deleted');
-            $this->dispatch('notify', message: 'Postingan berhasil dihapus', type: 'success');
-        }
+        Gate::authorize('delete', $this->post);
+
+        $this->post->delete();
+        $this->dispatch('post-deleted');
+        $this->dispatch('notify', message: 'Postingan berhasil dihapus', type: 'success');
     }
 
     #[\Livewire\Attributes\On('comment-added')]
