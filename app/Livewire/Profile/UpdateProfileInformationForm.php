@@ -4,6 +4,7 @@ namespace App\Livewire\Profile;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -48,6 +49,9 @@ class UpdateProfileInformationForm extends Component
         }
 
         if ($this->cover_photo) {
+            if ($user->cover_photo) {
+                Storage::disk('public')->delete($user->cover_photo);
+            }
             $validated['cover_photo'] = $this->cover_photo->store('covers', 'public');
         } else {
             unset($validated['cover_photo']);
